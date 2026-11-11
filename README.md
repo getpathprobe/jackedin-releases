@@ -14,19 +14,19 @@ Get the latest version from the [Releases page](https://github.com/getpathprobe/
 
 | Platform | File |
 |---|---|
-| Windows 10/11 x64 installer | `JackedIN_1.0.28_x64-setup.exe` |
-| Windows 10/11 x64 portable | `JackedIN_1.0.28.zip` |
-| Debian/Ubuntu x86_64 | `JackedIN_1.0.28_amd64.deb` |
+| Windows 10/11 x64 installer | `JackedIN_1.0.31_x64-setup.exe` |
+| Windows 10/11 x64 portable | `JackedIN_1.0.31_Windows.zip` |
+| Debian/Ubuntu x86_64 | `JackedIN_1.0.31_amd64.deb` |
 
 Verify downloads with `SHA256SUMS`.
 
 ## Install
 
-**Windows:** run `JackedIN_1.0.28_x64-setup.exe`. The installer is not code-signed yet, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**. Or unzip the portable build and run `jackedin.exe`.
+**Windows:** run `JackedIN_1.0.31_x64-setup.exe`. The installer is not code-signed yet, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**. Or unzip the portable build and run `jackedin.exe`.
 
 **Ubuntu / Debian:**
 ```sh
-sudo apt install ./JackedIN_1.0.28_amd64.deb
+sudo apt install ./JackedIN_1.0.31_amd64.deb
 jackedin --version
 ```
 

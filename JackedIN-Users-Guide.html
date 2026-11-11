@@ -24,7 +24,7 @@ SFTP file transfer is not included.
 
 ### Windows
 
-Run `JackedIN_1.0.28_x64-setup.exe` and follow the installer. The Start menu entry is JackedIN. The command is added for the current user when the installer finishes. `jackedin --version` prints `1.0.28`.
+Run `JackedIN_1.0.31_x64-setup.exe` and follow the installer. The Start menu entry is JackedIN. The command is added for the current user when the installer finishes. `jackedin --version` prints `1.0.31`.
 
 Windows SmartScreen may say “Windows protected your PC” because the installer is not signed. Choose **More info**, then **Run anyway**.
 
@@ -37,7 +37,7 @@ The portable zip is the same program without an installer. Unzip it and run `jac
 Install the Ubuntu package:
 
 ```bash
-sudo apt install ./JackedIN_1.0.28_amd64.deb
+sudo apt install ./JackedIN_1.0.31_amd64.deb
 ```
 
 The package depends on WebKitGTK 4.1, GTK 3, Ayatana AppIndicator, iputils-ping, and traceroute (or iputils-tracepath). The command is `jackedin`. The user's guide is installed with the package resources (this file and the HTML copy).
@@ -56,7 +56,7 @@ A version released on or before updates-until keeps working forever. A version r
 
 ### Activate in the window
 
-After the trial ends, until a valid key is stored, the window is the activation screen and the command line and local API refuse to open a session or run a tool. The window says **Trial expired, buy a license**. Buy JackedIN at https://jackedin.app. Paste the key from the purchase email and choose Activate, or run `jackedin license activate`. JackedIN writes it to `license.key` in the config directory and checks it every time it starts. A changed or incomplete key is rejected and not stored. A valid key ends the trial. A licensed copy does not show the trial countdown.
+After the trial ends, until a valid key is stored, the window is the activation screen and the command line and local API refuse to open a session or run a tool. The window says **Trial expired, buy a license**. Buy JackedIN at https://getpathprobe.com/jackedin/. Paste the key from the purchase email and choose Activate, or run `jackedin license activate`. JackedIN writes it to `license.key` in the config directory and checks it every time it starts. A changed or incomplete key is rejected and not stored. A valid key ends the trial. A licensed copy does not show the trial countdown.
 
 The end-user license is shown only the first time JackedIN runs on that computer. Acceptance is the EULA version and the time it was accepted, stored in the config folder: `%APPDATA%\JackedIN` on Windows and `~/.config/jackedin` on Linux. Later launches skip it. A new version of the agreement asks again. **I do not accept** exits without saving that record and without running. `jackedin eula accept` or `--accept-eula` on a command records the same acceptance for the command line.
 
@@ -337,7 +337,7 @@ A 3-day trial starts when the agreement is first accepted on this computer.
 The window, command line, and local API work for 72 hours without a key.
 jackedin license status prints the time left. After 72 hours the app locks.
 
-A license key is required after the trial. Buy JackedIN at https://jackedin.app.
+A license key is required after the trial. Buy JackedIN at https://getpathprobe.com/jackedin/.
 jackedin license activate stores the key. A build released
 after the key's updates-until date still runs and prints: updates expired, renew.
 ```

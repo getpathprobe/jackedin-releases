@@ -1,0 +1,31 @@
+JACKEDIN™ END USER LICENSE AGREEMENT
+
+Copyright © 2026 JackedIN. All rights reserved.
+
+This End User License Agreement ("Agreement") is a legal agreement between you and JackedIN ("Licensor") for the JackedIN™ software, including the desktop application, the jackedin command-line program, and the documentation supplied with them ("Software").
+
+By installing the Software, or by choosing "I accept" the first time it runs, you agree to this Agreement. If you do not agree, do not install or use the Software.
+
+1. Commercial license. The Software is a paid product. There is no free public license. A license key is required to unlock the Software. The key records the buyer email, order id, product name, issue date, and the date through which updates are included.
+
+2. Single user. Licensor grants you one non-exclusive, non-transferable license to install and use the Software for yourself on computers you personally use. One purchase is for one person. It is not a site license, a household license, or a license for a company to share.
+
+3. No redistribution. You may not copy the Software, the installer, or a license key for others. You may not post them, give them away, or include them in another product.
+
+4. No reverse engineering. You may not reverse engineer, decompile, disassemble, or otherwise attempt to derive the source code of the Software, except where a statute expressly forbids this limit.
+
+5. No resale. You may not sell, rent, lease, sublicense, or otherwise transfer the Software or a license key.
+
+6. Licensor retains all rights. Licensor owns the Software and all intellectual property in it, including the JackedIN™ name and mark. This Agreement gives you a limited right to use the Software. It does not sell you the Software. JackedIN™ is an unregistered trademark of JackedIN. All rights not expressly granted are reserved.
+
+7. Updates. A purchase includes updates released on or before the updates-until date in your license key, which is one year from purchase unless the key says otherwise. A paid renewal extends that date. Versions released on or before that date keep working. A version released after that date still runs and tells you that updates have expired and that you may renew.
+
+8. No refunds. Fees paid for the Software or for a renewal are not refundable, to the fullest extent the law allows.
+
+9. Warranty disclaimer. THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE." LICENSOR DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. LICENSOR DOES NOT WARRANT THAT THE SOFTWARE WILL BE ERROR-FREE OR THAT IT WILL MEET YOUR REQUIREMENTS.
+
+10. Limitation of liability. TO THE FULLEST EXTENT THE LAW ALLOWS, LICENSOR WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF DATA, PROFITS, OR BUSINESS, ARISING OUT OF THIS AGREEMENT OR THE USE OF THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY. LICENSOR'S TOTAL LIABILITY FOR ANY CLAIM ARISING OUT OF THIS AGREEMENT WILL NOT EXCEED THE AMOUNT YOU PAID FOR THE LICENSE THAT GAVE RISE TO THE CLAIM.
+
+11. Termination. This license ends if you break this Agreement. When it ends, you must stop using the Software and delete your copies. Sections 6, 8, 9, and 10 survive.
+
+12. Entire agreement. This Agreement is the whole agreement about the Software. It replaces any earlier statement about a free, open-source, or public license for JackedIN™.

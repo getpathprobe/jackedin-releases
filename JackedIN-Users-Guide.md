@@ -12,7 +12,7 @@ SFTP file transfer is not included.
 
 ### Windows
 
-Run `JackedIN_1.0.31_x64-setup.exe` and follow the installer. The Start menu entry is JackedIN. The command is added for the current user when the installer finishes. `jackedin --version` prints `1.0.31`.
+Run `JackedIN_1.0.32_x64-setup.exe` and follow the installer. The Start menu entry is JackedIN. The command is added for the current user when the installer finishes. `jackedin --version` prints `1.0.32`.
 
 Windows SmartScreen may say “Windows protected your PC” because the installer is not signed. Choose **More info**, then **Run anyway**.
 
@@ -25,7 +25,7 @@ The portable zip is the same program without an installer. Unzip it and run `jac
 Install the Ubuntu package:
 
 ```bash
-sudo apt install ./JackedIN_1.0.31_amd64.deb
+sudo apt install ./JackedIN_1.0.32_amd64.deb
 ```
 
 The package depends on WebKitGTK 4.1, GTK 3, Ayatana AppIndicator, iputils-ping, and traceroute (or iputils-tracepath). The command is `jackedin`. The user's guide is installed with the package resources (this file and the HTML copy).
@@ -36,7 +36,7 @@ A macOS build is coming soon. This guide does not describe a current macOS insta
 
 ## Paid license
 
-JackedIN™ is a paid download. A purchase includes the app and one year of updates. A $15 renewal extends that year. One purchase is a single-user license. You may not redistribute, resell, or share the license key. Help → About, and Settings → About, show the email, order id, and updates-until date from the key that unlocked this copy. During the trial, About shows Trial instead of an email.
+JackedIN™ is a paid download. A purchase includes the app and one year of updates. A $15 renewal extends that year. One purchase is one license for one computer. The license is locked to that computer and is non-transferable. Reinstalling on the same computer can activate again. You may not redistribute, resell, or share the license key. Help → About, and Settings → About, show the email, order id, and updates-until date from the key that unlocked this copy. During the trial, About shows Trial instead of an email.
 
 The license is an offline key signed by the seller. It names the buyer email, the order id, the product JackedIN, the issue date, and the updates-until date (the purchase date plus one year). The app checks the signature with a public key built into the program. The private key is not in the app.
 
@@ -67,7 +67,7 @@ The first time the agreement is accepted on a computer, JackedIN starts a 3-day 
 
 Windows stores the trial in `%APPDATA%\JackedIN` and in the registry key `HKCU\Software\JackedIN`. Linux stores it in `~/.config/jackedin` and `~/.local/share/jackedin`. Each copy is tied to that computer. Uninstalling JackedIN does not delete those markers, on Windows or on Linux, so installing again does not start a new 3 days. Removing one copy while the other remains ends the trial. Setting the clock back more than a few minutes ends it too.
 
-When the 72 hours are up, the window, the command line, and the API lock. The message is **Trial expired, buy a license**, followed by the purchase page and `jackedin license activate`. Entering a valid key at any time ends the trial and unlocks the copy. A licensed user does not see the trial banner.
+When the 72 hours are up, the window, the command line, and the API lock. The message is **Trial expired, buy a license**, followed by the purchase page and `jackedin license activate`. Entering a valid key and activating this computer ends the trial and unlocks the copy. Later launches check that activation offline. A licensed user does not see the trial banner.
 
 ## What a license includes
 
@@ -278,7 +278,7 @@ jackedin scan --host H [--ports 22,80,443]
 jackedin ping --host H
 jackedin trace --host H [--source IP] [--port 22]
 jackedin headless            serve the local API (it must be enabled in settings)
-jackedin license activate KEY   store an offline license key
+jackedin license activate KEY   activate this computer with a license key
 jackedin license status         show whether this build is licensed
 jackedin eula accept            record acceptance of the license agreement
 jackedin eula                   show the agreement file and whether it was accepted
@@ -325,9 +325,10 @@ A 3-day trial starts when the agreement is first accepted on this computer.
 The window, command line, and local API work for 72 hours without a key.
 jackedin license status prints the time left. After 72 hours the app locks.
 
-A license key is required after the trial. Buy JackedIN at https://getpathprobe.com/jackedin/.
-jackedin license activate stores the key. A build released
-after the key's updates-until date still runs and prints: updates expired, renew.
+A license key is required after the trial. One license is locked to one computer and is non-transferable.
+Buy JackedIN at https://getpathprobe.com/jackedin/.
+jackedin license activate binds this computer. Reinstalling on the same computer can activate again.
+A build released after the key's updates-until date still runs and prints: updates expired, renew.
 ```
 
 ### Flags on `connect`

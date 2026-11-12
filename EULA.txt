@@ -8,13 +8,13 @@ By installing the Software, or by choosing "I accept" the first time it runs, yo
 
 1. Commercial license. The Software is a paid product. There is no free public license. A license key is required to unlock the Software. The key records the buyer email, order id, product name, issue date, and the date through which updates are included.
 
-2. Single user. Licensor grants you one non-exclusive, non-transferable license to install and use the Software for yourself on computers you personally use. One purchase is for one person. It is not a site license, a household license, or a license for a company to share.
+2. One computer. Licensor grants you one non-exclusive license to install and use the Software on one computer. One purchase is one license for one computer. The license is locked to that computer and is non-transferable. Reinstalling the Software on the same computer is allowed. It is not a site license, a household license, or a license for a company to share. You may not share the license key.
 
 3. No redistribution. You may not copy the Software, the installer, or a license key for others. You may not post them, give them away, or include them in another product.
 
 4. No reverse engineering. You may not reverse engineer, decompile, disassemble, or otherwise attempt to derive the source code of the Software, except where a statute expressly forbids this limit.
 
-5. No resale. You may not sell, rent, lease, sublicense, or otherwise transfer the Software or a license key.
+5. No resale. You may not sell, rent, lease, sublicense, transfer, or give the Software or a license key to anyone else.
 
 6. Licensor retains all rights. Licensor owns the Software and all intellectual property in it, including the JackedIN™ name and mark. This Agreement gives you a limited right to use the Software. It does not sell you the Software. JackedIN™ is an unregistered trademark of JackedIN. All rights not expressly granted are reserved.
 

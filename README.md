@@ -4,7 +4,7 @@ JackedIN™ is an SSH, Telnet and serial terminal for network engineers, with a 
 
 This repository contains **release binaries and documentation only**. Source code is not published here.
 
-**Try it before you buy it:** every download includes a full-featured 3-day free trial. After the trial, a license key is required. Buy at https://getpathprobe.com/jackedin/ — $19 launch price (regular $29), one-time, with 1 year of updates ($15 to renew).
+**Try it before you buy it:** every download includes a full-featured 3-day free trial. After the trial, a license key is required. Buy at https://getpathprobe.com/jackedin/ — $19 launch price (regular $29), one-time, with 1 year of updates ($15 to renew). **One license = one computer, non-transferable:** the key activates online once and is then locked to that computer.
 
 Support: service@getpathprobe.com
 
@@ -14,19 +14,19 @@ Get the latest version from the [Releases page](https://github.com/getpathprobe/
 
 | Platform | File |
 |---|---|
-| Windows 10/11 x64 installer | `JackedIN_1.0.31_x64-setup.exe` |
-| Windows 10/11 x64 portable | `JackedIN_1.0.31_Windows.zip` |
-| Debian/Ubuntu x86_64 | `JackedIN_1.0.31_amd64.deb` |
+| Windows 10/11 x64 installer | `JackedIN_1.0.32_x64-setup.exe` |
+| Debian/Ubuntu x86_64 | `JackedIN_1.0.32_amd64.deb` |
+| Linux x86_64 portable | `JackedIN_1.0.32_Linux_x64.zip` |
 
 Verify downloads with `SHA256SUMS`.
 
 ## Install
 
-**Windows:** run `JackedIN_1.0.31_x64-setup.exe`. The installer is not code-signed yet, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**. Or unzip the portable build and run `jackedin.exe`.
+**Windows:** run `JackedIN_1.0.32_x64-setup.exe`. The installer is not code-signed yet, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**. It installs for the current user and needs no admin rights.
 
 **Ubuntu / Debian:**
 ```sh
-sudo apt install ./JackedIN_1.0.31_amd64.deb
+sudo apt install ./JackedIN_1.0.32_amd64.deb
 jackedin --version
 ```
 

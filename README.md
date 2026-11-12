@@ -4,7 +4,7 @@ JackedIN™ is an SSH, Telnet and serial terminal for network engineers, with a 
 
 This repository contains **release binaries and documentation only**. Source code is not published here.
 
-**Try it before you buy it:** every download includes a full-featured 3-day free trial. After the trial, a license key is required. Buy at https://getpathprobe.com/jackedin/ — $19 launch price (regular $29), one-time, with 1 year of updates ($15 to renew). **One license = one computer, non-transferable:** the key activates online once and is then locked to that computer.
+**Try it before you buy it:** every download includes a full-featured 3-day free trial. After the trial, a license key is required. Buy at https://getpathprobe.com/jackedin/ — $19 launch price (regular $29), one-time, with 1 year of updates. **One license = one computer, non-transferable:** the key activates online once and is then locked to that computer.
 
 Support: service@getpathprobe.com
 

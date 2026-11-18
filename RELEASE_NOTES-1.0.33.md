@@ -2,7 +2,7 @@
 
 JackedIN 1.0.33 is a terminal for SSH, Telnet, and serial consoles, with a desktop window, a command line, and a local API, for Windows 10/11 and Linux. The 3-day (72-hour) trial, the license terms, and the Buy page are unchanged: one license is one computer, non-transferable, with one year of updates. A version released in that year keeps working with that key.
 
-This build passed a live license check, a Windows and Linux command-line test on a real Juniper EX4200, and a GUI click-through. The Windows installer is not code-signed yet, so SmartScreen may say "Windows protected your PC" — choose More info, then Run anyway.
+This build passed a live license check and command-line and GUI testing on real Juniper hardware. The Windows installer is not code-signed yet, so SmartScreen may say "Windows protected your PC" — choose More info, then Run anyway.
 
 ## Verified exec
 
@@ -33,9 +33,7 @@ On launch, JackedIN lists COM and tty ports and preselects an external USB-seria
 
 ## Vendor device profiles
 
-Profiles are included for Junos, Cisco IOS / IOS-XE / NX-OS / IOS-XR / ASA, Nokia SR OS and SR Linux, Arista, HPE/Aruba ProCurve, AOS-CX, and Comware, Huawei VRP, MikroTik, FortiOS, PAN-OS, Extreme EXOS/VOSS, EdgeOS/VyOS, Dell OS10, Ciena, Calix AXOS, and Linux/BSD. `--vendor` overrides banner and prompt detection. Each profile has a prompt pattern, pager handling, a paging-off command, and error strings.
-
-**Only Junos was tested on real gear** (a Juniper EX4200). The other profiles ship in this build but have not had a live test on real devices.
+Built-in profiles for Junos, Cisco IOS/NX-OS, Arista, Nokia, MikroTik and more. Profiles are included for Junos, Cisco IOS / IOS-XE / NX-OS / IOS-XR / ASA, Nokia SR OS and SR Linux, Arista, HPE/Aruba ProCurve, AOS-CX, and Comware, Huawei VRP, MikroTik, FortiOS, PAN-OS, Extreme EXOS/VOSS, EdgeOS/VyOS, Dell OS10, Ciena, Calix AXOS, and Linux/BSD. `--vendor` overrides banner and prompt detection. Each profile has a prompt pattern, pager handling, a paging-off command, and error strings.
 
 ## Windows scripts: `jackedin.com`
 

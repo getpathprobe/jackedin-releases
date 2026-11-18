@@ -12,7 +12,7 @@ SFTP file transfer is not included.
 
 ### Windows
 
-Run `JackedIN_1.0.32_x64-setup.exe` and follow the installer. The Start menu entry is JackedIN. The command is added for the current user when the installer finishes. `jackedin --version` prints `1.0.32`.
+Run `JackedIN_1.0.33_x64-setup.exe` and follow the installer. The Start menu entry is JackedIN and opens the window (`jackedin.exe`). Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.0.33` when you run the console program.
 
 Windows SmartScreen may say “Windows protected your PC” because the installer is not signed. Choose **More info**, then **Run anyway**.
 
@@ -25,7 +25,7 @@ The portable zip is the same program without an installer. Unzip it and run `jac
 Install the Ubuntu package:
 
 ```bash
-sudo apt install ./JackedIN_1.0.32_amd64.deb
+sudo apt install ./JackedIN_1.0.33_amd64.deb
 ```
 
 The package depends on WebKitGTK 4.1, GTK 3, Ayatana AppIndicator, iputils-ping, and traceroute (or iputils-tracepath). The command is `jackedin`. The user's guide is installed with the package resources (this file and the HTML copy).
@@ -99,11 +99,11 @@ A keyboard-interactive prompt (a one-time code, for example) is asked after the 
 
 ### Telnet
 
-Choose Telnet. The default port is 23. Window size and terminal type are negotiated. Use this for a switch or router management address when SSH is not available.
+Choose Telnet. The default port is 23. Window size and terminal type are negotiated. Use this for a switch or router management address when SSH is not available. `connect` and `exec` answer `login:` with `--user` and `Password:` with `--password`. The password is sent only after `Password:` has gone quiet, and it is never typed at `login:`.
 
 ### Serial
 
-On launch JackedIN lists COM and tty ports and preselects an external USB-serial adapter (FTDI, Prolific, CH340, or CP210x) when one is present. If none of those is listed, the box starts on the last port that is still present, otherwise the first port. If that last port is gone, the dialog says so. You can still type a path. `jackedin ports` prints the same names, with the USB product name when the operating system provides it.
+On launch JackedIN lists COM and tty ports and preselects an external USB-serial adapter (FTDI, Prolific, CH340, or CP210x) when one is present. If none of those is listed, the box starts on the last port that is still present, otherwise the first port. If that last port is gone, the dialog says so. You can still type a path. `jackedin ports` prints the same names, with the USB product name when the operating system provides it. Ports the enumerator does not report as present are omitted. On Windows that includes COM ports whose PnP status is Unknown or not present. `jackedin ports --all` adds COM names that are still in the SERIALCOMM device map and marks them `PnP status unknown or not present`.
 
 | | Windows | Linux |
 | --- | --- | --- |
@@ -273,6 +273,10 @@ jackedin connect --protocol serial --host COM5 --port 9600
 jackedin connect --protocol serial --serial /dev/ttyUSB0 --baud 9600 --data-bits 8 --parity none --stop-bits 1 --flow none
 jackedin ports [--all]         list serial ports (COM and /dev/tty*)
 jackedin connect --session "Lab switch" [--cmd 'show ver'] [--expect '#']
+jackedin exec --host H --trust-host-key [--json] [--timeout SEC] [--prompt REGEX] [commands...]
+jackedin exec --session "Lab switch" --file commands.txt
+jackedin break SESSION_ID [--ms 300]
+jackedin check HOST[:PORT]
 jackedin run --session "Lab switch" --cmd 'show ver' --expect '#'
 jackedin scan --host H [--ports 22,80,443]
 jackedin ping --host H
@@ -292,6 +296,9 @@ Serial --host (or --serial / --device) is the device path: COM5 on Windows,
 baud rate when --baud is omitted. Defaults are 9600 8N1, no flow control.
 jackedin ports lists USB and ACM devices first, then the rest in numeric order
 (ttyS2 before ttyS10). ttyS ports whose kernel type is 0 are hidden unless --all.
+On Windows the default list is the COM ports the enumerator reports as present.
+Ports whose PnP status is Unknown or not present are omitted. --all adds COM names
+that are still in the SERIALCOMM device map and marks them "PnP status unknown or not present".
 On Linux, permission denied means the user is not in the dialout group (some
 systems use uucp or lock). Add the group, then log out and back in.
 
@@ -300,6 +307,21 @@ that file. --raw keeps control codes in the log and on stdout; otherwise CR, NUL
 and escape sequences are stripped. SSH --cmd output is written to that log.
 
 A pipe on stdin is sent to a Telnet session and to an interactive SSH shell.
+That closes the session when the pipe ends, so do not use it to change config.
+Use jackedin exec, which reads every command first and waits for each prompt.
+exec accepts the same serial options as connect (--serial, --device, or --host COM5,
+plus --baud). !break in an exec command list sends a break on that session.
+!sleep 500 waits that many milliseconds and sends nothing.
+--line-delay MS waits between lines. --char-delay MS waits between characters.
+--wait-for-echo waits until the device echoes a line before the next one.
+Serial uses a 100 ms line delay when --line-delay is omitted. The next exec
+command is never sent until the prompt returns.
+--vendor NAME selects a device profile (junos, ios, ios-xe, nxos, ios-xr, asa,
+nokia, srlinux, arista, procurve, aos-cx, comware, huawei, mikrotik, fortinet,
+panos, exos, voss, vyos, edgeos, os10, ciena, axos, linux). Omit it and the
+prompt or the banner picks the profile, including the pager and error strings.
+--log FILE and --known-hosts FILE on exec are honored the same way as on connect.
+--known-hosts is the file new host keys are written to.
 Example: echo 'show version' | jackedin connect --protocol telnet --host 192.0.2.10
 --baud must be a number from 1 to 12000000. A bad value is an error, not 9600.
 Serial is assumed when --serial, --device, or --baud is set, or when --host looks
@@ -307,6 +329,8 @@ like COM5 or /dev/ttyUSB0, even if --protocol is omitted.
 A serial --password is sent only after a Password: prompt has had no new bytes
 for a moment. Login incorrect is tried once more. The password is never sent
 at a login: prompt. A shell prompt does not receive that password.
+Telnet connect and exec do the same with --user and --password: login: receives
+the username, and Password: receives the password only after the prompt goes quiet.
 
 SSH reads ~/.ssh/config (Host aliases, HostName, User, Port, IdentityFile, one ProxyJump).
 With no --key or --password, ssh-agent (SSH_AUTH_SOCK) is used, then ~/.ssh/id_ed25519,
@@ -347,6 +371,130 @@ A build released after the key's updates-until date still runs and prints: updat
 | `--log FILE` | Append this log file. |
 | `--no-log` | Do not write a session log. |
 | `--raw` | Keep NULs, CR, and escape sequences in the log and on stdout. |
+
+## Automation and AI agents: verified exec
+
+Do not pipe a command into `jackedin connect` or into plink and assume the change landed. Those programs treat end-of-file on standard input as the end of the session. The device may still be paging, or it may have printed `% Invalid input`, and the agent has already moved on.
+
+`jackedin exec` reads every command first (from arguments, `--file`, or stdin), then drives one persistent interactive session. It waits until the device prompt returns, pages through `--More--`, `---(more)---`, `---(more 57%)---`, `---(more 100%)---`, and `Press any key`, and reports a structured result. The session log still receives the command and the output. A Junos pager that ends in `---(more 100%)---` is advanced the same way, and the next prompt (`user@host>` or `user@host#`) ends the command.
+
+```bash
+jackedin exec --host 192.0.2.10 --user admin --password secret --trust-host-key \
+  --json --timeout 8 --cmd 'show version'
+printf '%s\n' 'configure terminal' 'hostname lab' 'end' | \
+  jackedin exec --host 192.0.2.10 --trust-host-key --verify 'show run' \
+  --expect-match 'hostname lab'
+```
+
+`--prompt` replaces the prompt JackedIN detects. `--vendor NAME` forces a profile. Omit it and the prompt line, or a banner such as `JUNOS` or `NX-OS`, picks the profile. `--disable-paging` sends that profile's paging command. `--no-stop-on-error` keeps going after a device error. The process exits non-zero if any command, timeout, or verify check fails.
+
+| Profile | Prompt | Turn paging off |
+| --- | --- | --- |
+| `junos` | `user@host:RE:0%`, `%`, `user@host>`, `user@host#` | `set cli screen-length 0` |
+| `ios` `ios-xe` | `Router>`, `Router#`, `Router(config)#` | `terminal length 0` |
+| `nxos` | same shape as IOS | `terminal length 0` |
+| `ios-xr` | `RP/0/RP0/CPU0:ios#` | `terminal length 0` |
+| `asa` | `ciscoasa>`, `ciscoasa(config)#` | `terminal pager 0` |
+| `nokia` | `A:router#`, `*A:router#`, `[/configure]` | `environment no more` |
+| `srlinux` | `--{ running }--[  ]--` | `environment pager false` |
+| `arista` | `eos#`, `eos(config)#` | `terminal length 0` |
+| `procurve` | `switch#` | `no page` |
+| `aos-cx` | `switch#` | `no page` |
+| `comware` | `<HPE>`, `[HPE]` | `screen-length disable` |
+| `huawei` | `<Huawei>`, `[Huawei]` | `screen-length 0 temporary` |
+| `mikrotik` | `[admin@MikroTik] >` | none |
+| `fortinet` | `FortiGate #`, `FortiGate $` | none |
+| `panos` | `admin@PA-220>`, `admin@PA-220#` | `set cli pager off` |
+| `exos` | `X460.1 #` | `disable clipaging` |
+| `voss` | `switch:1>` | `terminal more disable` |
+| `vyos` `edgeos` | `vyos@vyos:~$`, `vyos@vyos#` | none |
+| `os10` | `OS10#` | `terminal length 0` |
+| `ciena` | `saos>` | `terminal more off` |
+| `axos` | `AXOS#` | `terminal length 0` |
+| `linux` | `user@host:~$`, `#`, `$` | none |
+
+A banner specializes a shared prompt. `Router#` after `Cisco NX-OS` uses the NX-OS profile. `user@host>` stays Junos unless the banner says PAN-OS or you pass `--vendor panos`. Pagers include `--More--`, `---(more)---`, `---(more 100%)---`, `---- More ----`, `Press any key`, and `Press <SPACE> to continue`. Error text includes `% Invalid input`, `syntax error`, `MINOR:`, `Command fail`, `Unrecognized command`, `Invalid syntax`, and `bad command name`.
+
+`jackedin exec` accepts the same serial options as `connect`: `--serial COM5`, `--device COM5`, or `--host COM5 --protocol serial`, with `--baud`. A line that is `!break` sends a break on that session. `--log FILE` and `--known-hosts FILE` apply to exec the same way they apply to connect. `--known-hosts` is where a new host key is written.
+
+Telnet `connect` and `exec` answer `login:` with `--user` and `Password:` with `--password`. The password is not typed at `login:`.
+
+`jackedin ports` lists ports the operating system reports as present. A USB adapter such as a Prolific PL2303 is listed first. On Windows, COM ports whose PnP status is Unknown or not present are omitted from that list. `jackedin ports --all` adds COM names that remain in the SERIALCOMM device map and marks them `PnP status unknown or not present`. On Linux, `--all` also shows ttyS ports whose kernel type is 0.
+
+On an open session the same work is `POST /v1/sessions/{id}/exec`. A second call reuses that session. `POST /v1/exec` connects, runs, and disconnects. The MCP tool is `exec`. Use it instead of piping.
+
+```bash
+curl -s -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' \
+  -d '{"commands":["show version"],"verify":"show version","expectMatch":"Cisco"}' \
+  http://127.0.0.1:47321/v1/sessions/SESSION_ID/exec
+```
+
+Each command is `{command, ok, output, prompt, matched_error, timed_out, duration_ms}`. `ok` on the object is false when any command, timeout, or verify failed.
+
+## Send Break
+
+Session → Send Break, or Ctrl+Break, or the tab right-click menu, holds a serial break for 300 ms. Telnet sends IAC BRK. SSH sends the RFC 4335 `break` channel request and says so if the server rejects it. `--ms` is 250 through 5000.
+
+```bash
+jackedin connect --protocol serial --host COM5 --baud 9600 --break --break-ms 300
+jackedin exec --protocol serial --host COM5 --break --prompt 'rommon' --cmd 'set'
+jackedin break SESSION_ID --ms 300
+```
+
+A Cisco password-recovery sequence is a break during boot, then the ROMMON prompt. `!break` in an exec command list is the same step. The device's own recovery procedure still applies. `POST /v1/sessions/{id}/break` takes `{"durationMs":300}`. The MCP tool is `send_break`.
+
+## Keep session alive
+
+A saved session, and Settings, can keep an idle session from being dropped. The default is off. The interval is 60 seconds and must be from 10 to 600. After the session has been idle that long, SSH sends `SSH_MSG_IGNORE` (protocol keepalive, not a CLI command). Telnet sends IAC NOP. Serial stays quiet unless you choose CLI mode.
+
+CLI mode is for devices whose `exec-timeout` counts only typed input. The default byte is a bare CR. You can set NUL (`\0`) or a space and backspace (` \x08`). JackedIN does not send that byte while verified exec is running, while you are typing, or while the screen shows `--More--`, `Password:`, `[confirm]`, `(y/n)`, or `Destination filename`. Those bytes are left out of the auto-log and are not treated as command errors. The status bar shows `keepalive` when it is on.
+
+Where you are allowed to change the device, `exec-timeout 0 0` (or the vendor's equivalent) is the cleaner fix. Keepalive does not override a security policy that wants idle sessions to end.
+
+```bash
+jackedin connect --host 192.0.2.10 --keepalive=60 --keepalive-mode=protocol
+jackedin connect --host 192.0.2.10 --keepalive-mode=cli --keepalive-payload '\0'
+```
+
+The API and MCP connection object accepts `keepaliveEnabled`, `keepaliveIntervalS`, `keepaliveMode`, and `keepalivePayload`.
+
+## Moving from plink
+
+| plink | JackedIN |
+| --- | --- |
+| `echo y \| plink ...` | `--hostkey SHA256:...` (repeatable) or `--hostkey-policy accept-new`. A changed key is never accepted in the background. The error is JSON: `{"error":"hostkey_mismatch","expected":[...],"got":"..."}`. |
+| `-batch` | Non-interactive mode fails immediately instead of waiting on a prompt. |
+| `-i key.ppk` | `-i` or `--key`, OpenSSH or PuTTY `.ppk`, passphrase from the prompt or `JACKEDIN_KEY_PASSPHRASE`. |
+| Pageant | ssh-agent, Pageant, and the Windows OpenSSH agent. If none is running, the auth error says so and lists the methods the server offered. |
+| `-t` / `-T` | `--pty auto\|force\|none`. Verified exec uses a PTY. `auto` also requests one for `sudo`, `su`, and `enable`. |
+| `-P port` and `host:port` | `--port`, `-P`, and `host:port`. |
+| timeouts | `--connect-timeout` and `--retries`. DNS failure, connection refused, timeout (often a firewall), and host unreachable are different messages. `jackedin check host:port` is the quick reachability test. |
+| registry host keys | Known hosts are a file. `JACKEDIN_KNOWN_HOSTS` or `--known-hosts` points at it, including `%ProgramData%\JackedIN\known_hosts.json` for a service account. `~/.ssh/known_hosts` is still read. `--import-putty` names PuTTY's `HKCU\Software\SimonTatham\PuTTY\SshHostKeys` key. JackedIN does not store host keys in the registry. |
+| `timeout` / `pause` / BusyBox `sleep` / expect between commands | Verified exec does not send the next command until the prompt returns. `!sleep 500` is an explicit gap. `--line-delay`, `--char-delay`, and `--wait-for-echo` pace a paste or a stdin file. |
+
+### Moving from plink: no more timeout/pause/BusyBox/expect hacks
+
+plink sends a whole command file, or everything on stdin, in one block. A slow console drops or swallows the later lines (`packet integrity error` and missing config are the usual symptoms). The old workaround is `timeout`, `pause`, a BusyBox `sleep`, or an expect script between commands.
+
+JackedIN does not do that. `jackedin exec` reads the whole list first, then sends one command and waits until the device prompt is back before it sends the next. It also answers `--More--`, `---(more)---`, and `---(more 100%)---`. `!sleep 500` in the command list waits 500 milliseconds and sends nothing. `--line-delay MS` is the gap between lines for exec, for a stdin pipe on `connect`, and for a multi-line paste. `--char-delay MS` pauses between characters on a slow serial console. A serial session uses a 100 ms line delay when `--line-delay` is omitted. A stdin pipe on `connect` (SSH, Telnet, or serial) sends one line, waits until the prompt after that line is back, then sends the next. It does not stop on a clock. After stdin ends, connect waits for the prompt that follows the last line, then exits. `--timeout SEC` limits each of those waits. Omit it and a line waits as long as the device needs. The same pacing fields on the API and MCP are `lineDelayMs`, `charDelayMs`, and `waitForEcho`.
+
+### Windows scripts use jackedin.com
+
+`jackedin.exe` is the window. It is a Windows GUI program, so `cmd` and `.bat` redirection does not capture it: `jackedin.exe --version > out.txt` leaves an empty file. PowerShell is not a guide for that; `cmd` is the case that fails.
+
+The installer and the Windows zip include `jackedin.com` in the same folder. It is a console program with the same commands, the same exit codes, and Ctrl+C. When both files are in the folder you run, `jackedin` in `cmd` is `jackedin.com`, because Windows tries `.com` before `.exe`.
+
+```bat
+jackedin --version > ver.txt
+jackedin exec --host 192.0.2.10 --trust-host-key --json show version > out.txt
+jackedin exec --serial COM5 --baud 9600 --user root --password secret show version | findstr JUNOS
+```
+
+If that folder is not on PATH, call `jackedin.com` by its full path. Do not point a script at `jackedin.exe`. Double-click `jackedin.exe`, or use the Start menu shortcut, to open the window. That does not open a console. `jackedin.com` with no arguments starts the same window.
+
+A paste of 20 lines or more asks before it is sent. The lines then go out one at a time, not as one block.
+
+A service account should set `JACKEDIN_CONFIG_DIR` and `JACKEDIN_KNOWN_HOSTS` to directories that account can write. JackedIN does not store host keys in the Windows registry.
 
 ## Local API and MCP
 

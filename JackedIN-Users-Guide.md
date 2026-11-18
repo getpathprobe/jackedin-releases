@@ -12,7 +12,7 @@ SFTP file transfer is not included.
 
 ### Windows
 
-Run `JackedIN_1.0.33_x64-setup.exe` and follow the installer. The Start menu entry is JackedIN and opens the window (`jackedin.exe`). Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.0.33` when you run the console program.
+Run `JackedIN_1.1.0_x64-setup.exe` and follow the installer. The Start menu entry is JackedIN and opens the window (`jackedin.exe`). Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.1.0` when you run the console program.
 
 Windows SmartScreen may say “Windows protected your PC” because the installer is not signed. Choose **More info**, then **Run anyway**.
 
@@ -25,7 +25,7 @@ The portable zip is the same program without an installer. Unzip it and run `jac
 Install the Ubuntu package:
 
 ```bash
-sudo apt install ./JackedIN_1.0.33_amd64.deb
+sudo apt install ./JackedIN_1.1.0_amd64.deb
 ```
 
 The package depends on WebKitGTK 4.1, GTK 3, Ayatana AppIndicator, iputils-ping, and traceroute (or iputils-tracepath). The command is `jackedin`. The user's guide is installed with the package resources (this file and the HTML copy).
@@ -63,7 +63,7 @@ Those commands also require the license agreement. `jackedin eula` prints the pa
 
 ## Trial
 
-The first time the agreement is accepted on a computer, JackedIN starts a 3-day trial. For 72 hours the window, the command line, and the local API all work without a license key. The window shows `Trial: 2 days 5 h left, Buy / Enter license` on a banner and in the status bar. **Buy** opens the purchase page. **Enter license** is the same Activate box used after the trial. Help → About and Settings → About show Trial. `jackedin license status` prints that countdown. The local API `GET /v1/health` response includes a `trial` field (`state`, `expiresAt`, `remainingSeconds`, `message`).
+The first license check on a computer starts JackedIN's 3-day trial. For 72 hours the window, the command line, and the local API all work without a license key. The window shows `Trial: 2 days 5 h left, Buy / Enter license` on a banner and in the status bar. **Buy** opens the purchase page. **Enter license** is the same Activate box used after the trial. Help → About and Settings → About show Trial. `jackedin license status` prints that countdown. The local API `GET /v1/health` response includes a `trial` field (`state`, `expiresAt`, `remainingSeconds`, `message`).
 
 Windows stores the trial in `%APPDATA%\JackedIN` and in the registry key `HKCU\Software\JackedIN`. Linux stores it in `~/.config/jackedin` and `~/.local/share/jackedin`. Each copy is tied to that computer. Uninstalling JackedIN does not delete those markers, on Windows or on Linux, so installing again does not start a new 3 days. Removing one copy while the other remains ends the trial. Setting the clock back more than a few minutes ends it too.
 
@@ -273,7 +273,7 @@ jackedin connect --protocol serial --host COM5 --port 9600
 jackedin connect --protocol serial --serial /dev/ttyUSB0 --baud 9600 --data-bits 8 --parity none --stop-bits 1 --flow none
 jackedin ports [--all]         list serial ports (COM and /dev/tty*)
 jackedin connect --session "Lab switch" [--cmd 'show ver'] [--expect '#']
-jackedin exec --host H --trust-host-key [--json] [--timeout SEC] [--prompt REGEX] [commands...]
+jackedin exec --host H --trust-host-key [--json] [--output json] [--template FILE] [--timeout SEC] [--prompt REGEX] [commands...]
 jackedin exec --session "Lab switch" --file commands.txt
 jackedin break SESSION_ID [--ms 300]
 jackedin check HOST[:PORT]
@@ -290,6 +290,9 @@ jackedin mcp                 stdio MCP server for the local API (127.0.0.1 only)
 jackedin --bench-connect user@host[:port]
 jackedin --bench-launch        print ms until the first visible paint, then exit
 jackedin --diag-capture        write capture checks and a short start attempt to a file
+jackedin fleet --inventory FILE [--cmd CMD] [--concurrency N] [--output json]
+jackedin backup --host H --file FILE [--dir DIR]
+jackedin diff LEFT RIGHT
 
 Serial --host (or --serial / --device) is the device path: COM5 on Windows,
 /dev/ttyUSB0 or /dev/serial/by-id/... on Linux. For a serial session, --port is the
@@ -345,7 +348,7 @@ Commands other than --help and --version require the license agreement.
 jackedin eula accept records acceptance. --accept-eula on a command does the same.
 The agreement is saved as EULA.txt in the config folder.
 
-A 3-day trial starts when the agreement is first accepted on this computer.
+A 3-day trial starts at the first license check on this computer.
 The window, command line, and local API work for 72 hours without a key.
 jackedin license status prints the time left. After 72 hours the app locks.
 
@@ -353,6 +356,22 @@ A license key is required after the trial. One license is locked to one computer
 Buy JackedIN at https://getpathprobe.com/jackedin/.
 jackedin license activate binds this computer. Reinstalling on the same computer can activate again.
 A build released after the key's updates-until date still runs and prints: updates expired, renew.
+
+--output json is the same as --json. --template FILE parses command output
+with a TextFSM-style template from a directory you supply. Without
+--output json the parsed rows print as a table. JackedIN does
+not bundle a third-party template pack.
+fleet reads CSV or simple YAML (host, port, protocol, profile, credential, user).
+A user column, or a global --user, is sent to that device.
+The credential value is a name, not a password. Set JACKEDIN_CRED_<NAME>.
+backup stores a timestamped copy. diff prints a unified diff.
+--baud-autosense tries 9600, 19200, 38400, 57600, and 115200. It is off unless set.
+--wake sends CR and break with backoff when a console stays quiet.
+--console-user and --console-password log in to a console server before the device.
+--audit FILE writes a local JSON line for each command: who, what, when, device, result.
+Passwords and one-time codes are not written there. --max-attempts caps login retries.
+--local-user is the fallback account when the AAA server is unreachable.
+--otp-timeout SEC waits for a Duo, RSA, or one-time-code prompt.
 ```
 
 ### Flags on `connect`

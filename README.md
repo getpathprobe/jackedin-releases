@@ -14,20 +14,19 @@ Get the latest version from the [Releases page](https://github.com/getpathprobe/
 
 | Platform | File |
 |---|---|
-| Windows 10/11 x64 installer | `JackedIN_1.0.33_x64-setup.exe` |
-| Windows 10/11 x64 portable | `JackedIN_1.0.33_Windows_x64.zip` |
-| Debian/Ubuntu x86_64 | `JackedIN_1.0.33_amd64.deb` |
-| Linux x86_64 portable | `JackedIN_1.0.33_Linux_x64.zip` |
+| Windows 10/11 x64 portable | `JackedIN_1.1.0_Windows_x64.zip` |
+| Debian/Ubuntu x86_64 | `JackedIN_1.1.0_amd64.deb` |
+| Linux x86_64 portable | `JackedIN_1.1.0_Linux_x64.zip` |
 
 Verify downloads with `SHA256SUMS`.
 
 ## Install
 
-**Windows:** run `JackedIN_1.0.33_x64-setup.exe`. The installer is not code-signed yet, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**. It installs for the current user and needs no admin rights. The portable zip is the same program without an installer: unzip it and run `jackedin.exe` (scripts use `jackedin.com`).
+**Windows:** unzip `JackedIN_1.1.0_Windows_x64.zip` and run `jackedin.exe` (scripts use `jackedin.com`). No admin rights are needed. There is no 1.1.0 installer; the 1.0.33 installer is still on the [v1.0.33 release](https://github.com/getpathprobe/jackedin-releases/releases/tag/v1.0.33). It is not code-signed, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**.
 
 **Ubuntu / Debian:**
 ```sh
-sudo apt install ./JackedIN_1.0.33_amd64.deb
+sudo apt install ./JackedIN_1.1.0_amd64.deb
 jackedin --version
 ```
 

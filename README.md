@@ -1,6 +1,6 @@
 # JackedIN™ — release downloads
 
-JackedIN™ is an SSH, Telnet and serial terminal for network engineers, with a desktop window (GUI), a full command line (CLI) and a local automation API, for Windows and Linux. A Mac version is coming soon.
+JackedIN™ is an SSH, Telnet and serial terminal for network engineers, with a desktop window (GUI), a full command line (CLI) and a local automation API, for Windows, Linux and Raspberry Pi OS (64-bit). A Mac version is coming soon.
 
 This repository contains **release binaries and documentation only**. Source code is not published here.
 
@@ -14,19 +14,28 @@ Get the latest version from the [Releases page](https://github.com/getpathprobe/
 
 | Platform | File |
 |---|---|
-| Windows 10/11 x64 portable | `JackedIN_1.1.0_Windows_x64.zip` |
-| Debian/Ubuntu x86_64 | `JackedIN_1.1.0_amd64.deb` |
-| Linux x86_64 portable | `JackedIN_1.1.0_Linux_x64.zip` |
+| Windows 10/11 x64 portable | `JackedIN_1.1.1_Windows_x64.zip` |
+| Debian/Ubuntu x86_64 | `JackedIN_1.1.1_amd64.deb` |
+| Linux x86_64 portable | `JackedIN_1.1.1_Linux_x64.zip` |
+| Raspberry Pi OS 64-bit (arm64) | `JackedIN_1.1.1_arm64.deb` |
+| Raspberry Pi OS 64-bit portable | `JackedIN_1.1.1_Linux_arm64.zip` |
+| Raspberry Pi OS 64-bit portable binary only | `jackedin_1.1.1_linux_arm64` |
 
 Verify downloads with `SHA256SUMS`.
 
 ## Install
 
-**Windows:** unzip `JackedIN_1.1.0_Windows_x64.zip` and run `jackedin.exe` (scripts use `jackedin.com`). No admin rights are needed. There is no 1.1.0 installer; the 1.0.33 installer is still on the [v1.0.33 release](https://github.com/getpathprobe/jackedin-releases/releases/tag/v1.0.33). It is not code-signed, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**.
+**Windows:** unzip `JackedIN_1.1.1_Windows_x64.zip` and run `jackedin.exe` (scripts use `jackedin.com`). No admin rights are needed. There is no 1.1.1 installer; the 1.0.33 installer is still on the [v1.0.33 release](https://github.com/getpathprobe/jackedin-releases/releases/tag/v1.0.33). It is not code-signed, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**.
 
 **Ubuntu / Debian:**
 ```sh
-sudo apt install ./JackedIN_1.1.0_amd64.deb
+sudo apt install ./JackedIN_1.1.1_amd64.deb
+jackedin --version
+```
+
+**Raspberry Pi OS 64-bit:**
+```sh
+sudo apt install ./JackedIN_1.1.1_arm64.deb
 jackedin --version
 ```
 

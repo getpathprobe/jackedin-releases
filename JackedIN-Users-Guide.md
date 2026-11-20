@@ -12,20 +12,18 @@ SFTP file transfer is not included.
 
 ### Windows
 
-Run `JackedIN_1.1.0_x64-setup.exe` and follow the installer. The Start menu entry is JackedIN and opens the window (`jackedin.exe`). Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.1.0` when you run the console program.
+Unzip the Windows portable zip and run `jackedin.exe`. The user's guide files sit next to the executable. Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.1.1` when you run the console program.
 
-Windows SmartScreen may say “Windows protected your PC” because the installer is not signed. Choose **More info**, then **Run anyway**.
+Windows SmartScreen may say “Windows protected your PC” because the program is not signed. Choose **More info**, then **Run anyway**.
 
-The installer shows the end-user license and asks you to accept it before it copies files. The first time the window opens, on Windows or Linux, JackedIN shows the same license again. Choose **I accept** to continue. **I do not accept** exits JackedIN and does not record acceptance. Acceptance is stored in settings.
-
-The portable zip is the same program without an installer. Unzip it and run `jackedin.exe`. The user's guide files sit next to the executable.
+The first time the window opens, on Windows or Linux, JackedIN shows the end-user license. Choose **I accept** to continue. **I do not accept** exits JackedIN and does not record acceptance. Acceptance is stored in settings.
 
 ### Linux
 
 Install the Ubuntu package:
 
 ```bash
-sudo apt install ./JackedIN_1.1.0_amd64.deb
+sudo apt install ./JackedIN_1.1.1_amd64.deb
 ```
 
 The package depends on WebKitGTK 4.1, GTK 3, Ayatana AppIndicator, iputils-ping, and traceroute (or iputils-tracepath). The command is `jackedin`. The user's guide is installed with the package resources (this file and the HTML copy).
@@ -36,7 +34,7 @@ A macOS build is coming soon. This guide does not describe a current macOS insta
 
 ## Paid license
 
-JackedIN™ is a paid download. A purchase includes the app and one year of updates. A $15 renewal extends that year. One purchase is one license for one computer. The license is locked to that computer and is non-transferable. Reinstalling on the same computer can activate again. You may not redistribute, resell, or share the license key. Help → About, and Settings → About, show the email, order id, and updates-until date from the key that unlocked this copy. During the trial, About shows Trial instead of an email.
+JackedIN™ is a paid download. A purchase includes the app and one year of updates. One purchase is one license for one computer. The license is locked to that computer and is non-transferable. Reinstalling on the same computer can activate again. You may not redistribute, resell, or share the license key. Help → About, and Settings → About, show the email, order id, and updates-until date from the key that unlocked this copy. During the trial, About shows Trial instead of an email.
 
 The license is an offline key signed by the seller. It names the buyer email, the order id, the product JackedIN, the issue date, and the updates-until date (the purchase date plus one year). The app checks the signature with a public key built into the program. The private key is not in the app.
 
@@ -93,7 +91,7 @@ Ctrl+Alt+T opens a tab. Ctrl+Tab and Ctrl+Shift+Tab move between tabs. Ctrl+Alt+
 
 Choose SSH, type the host and user, and connect. A password, a private key (OpenSSH or PuTTY `.ppk`), or ssh-agent can authenticate. On Linux the agent is the socket in `SSH_AUTH_SOCK`. On Windows, Pageant and the Windows OpenSSH agent are used. Blank user, port, and key fields are filled from `~/.ssh/config` when the host matches, including one `ProxyJump`. Default key files are `~/.ssh/id_ed25519`, `id_ecdsa`, and `id_rsa`.
 
-The first time a host is seen, the dialog is titled **Trust this host key** and shows the fingerprint. Compare it with the device, then tick Trust this host key and connect again. That stores this fingerprint for this connection only. A recent connection created from the command line uses the same checkbox; it does not keep the terminal’s `--trust-host-key` wording or policy. A changed host key always warns.
+The first time a host is seen, a dialog titled **First time connecting to host:port** waits before the session continues. It shows the key type, the SHA256 fingerprint, and the MD5 fingerprint. **Trust and connect** saves the key. **Connect once** continues without saving it. **Cancel** stops. Enter chooses Trust and connect. Escape cancels. A changed host key opens a separate red warning with the old and new fingerprints. Cancel is the default. Replacing the saved key is a separate button. A recent connection created from the command line uses the same dialog. It does not keep the terminal’s `--trust-host-key` policy.
 
 A keyboard-interactive prompt (a one-time code, for example) is asked after the public key is accepted. A wrong code says the verification code was wrong. A wrong password says the server rejected that password.
 
@@ -136,7 +134,7 @@ On a narrow window, lower-priority status fields hide so the protocol, the host,
 
 Saved sessions live in the sidebar, in folders. Click a session (or activate it with a keyboard or a screen reader) to connect. The name in the Save session box is the name that is stored. A default name follows the current tab: the host on SSH or Telnet, the serial port on Serial. Switching from Serial to SSH replaces a leftover port name such as COM5 with the host. A name you typed stays.
 
-Each protocol keeps only its own fields. An SSH session keeps the private-key path and drops serial line settings. Telnet and serial drop the key path, the key passphrase, and the host-key policy. Serial also drops the host and the TCP port. Trust this host key stores the fingerprint for that connection. It is not saved as a permanent “accept any future key” flag. Stale fields from another protocol are removed when you save, and again when JackedIN starts.
+Each protocol keeps only its own fields. An SSH session keeps the private-key path and drops serial line settings. Telnet and serial drop the key path, the key passphrase, and the host-key policy. Serial also drops the host and the TCP port. Trust and connect stores that fingerprint. It is not a permanent “accept any future key” flag. Connect once does not store it. Stale fields from another protocol are removed when you save, and again when JackedIN starts.
 
 Delete asks you to confirm before the saved session is removed. An open terminal and the log files stay. Recent connections are the last few targets. The same host and port are listed once. A recent started from the command line does not keep that command’s `--log`, `--raw`, or `--no-log` choice. Opening it in the window writes a normal log in the log folder. Remove one from the list, or clear the list, without deleting a saved session or a log file.
 
@@ -208,7 +206,7 @@ Windows and Linux use Ctrl or Ctrl+Shift so that Ctrl+C still reaches the sessio
 | Shortcuts | F1 | Cmd+/ |
 | Launch hotkey | Ctrl+Alt+J | Cmd+Option+J |
 
-Right-click pastes into the terminal. Selecting text copies it. Port scan and traceroute are in the Tools menu. They have no extra shortcut so the session keeps those keys. The launch hotkey focuses quick connect while JackedIN is already running. The Windows installer also sets Ctrl+Alt+J on the Start menu entry so it can start the app when it is not running.
+Right-click pastes into the terminal. Selecting text copies it. Port scan and traceroute are in the Tools menu. They have no extra shortcut so the session keeps those keys. The launch hotkey focuses quick connect while JackedIN is already running.
 
 ## The command line
 
@@ -240,7 +238,7 @@ jackedin ports
 jackedin connect --protocol serial --serial /dev/ttyUSB0 --baud 9600 --data-bits 8 --parity none --stop-bits 1 --flow none
 ```
 
-`--host COM5 --port 9600` and `--serial /dev/ttyUSB0 --baud 9600` are the same kind of session, and `--protocol serial` can be left off. `--port` is the baud rate only when the protocol is serial and `--baud` is omitted. `--user` and `--password` sign in only when the device asks. After `Password:` the line must be quiet briefly before the password and a CR are sent. `Login incorrect` is tried once more. The password is never typed at a `login:` prompt or at a shell prompt (`%`, `#`, `>`, or `$`). A by-id path works as `--serial` or `--host`:
+`--host COM5 --port 9600` and `--serial /dev/ttyUSB0 --baud 9600` are the same kind of session, and `--protocol serial` can be left off. `--port` is the baud rate only when the protocol is serial and `--baud` is omitted. `--user` and `--password` sign in only when the device asks. After `Password:` the line must be quiet briefly before the password and a CR are sent. A wrong password is not sent again. The password is never typed at a `login:` prompt or at a shell prompt (`%`, `#`, `>`, or `$`). A by-id path works as `--serial` or `--host`:
 
 ```bash
 jackedin connect --protocol serial --host /dev/serial/by-id/usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0 --baud 9600
@@ -330,7 +328,7 @@ Example: echo 'show version' | jackedin connect --protocol telnet --host 192.0.2
 Serial is assumed when --serial, --device, or --baud is set, or when --host looks
 like COM5 or /dev/ttyUSB0, even if --protocol is omitted.
 A serial --password is sent only after a Password: prompt has had no new bytes
-for a moment. Login incorrect is tried once more. The password is never sent
+for a moment. A wrong password is not sent again. The password is never sent
 at a login: prompt. A shell prompt does not receive that password.
 Telnet connect and exec do the same with --user and --password: login: receives
 the username, and Password: receives the password only after the prompt goes quiet.
@@ -338,8 +336,10 @@ the username, and Password: receives the password only after the prompt goes qui
 SSH reads ~/.ssh/config (Host aliases, HostName, User, Port, IdentityFile, one ProxyJump).
 With no --key or --password, ssh-agent (SSH_AUTH_SOCK) is used, then ~/.ssh/id_ed25519,
 id_ecdsa, and id_rsa. A host already listed in ~/.ssh/known_hosts is trusted.
-The first time a host is seen, a terminal asks y/N. --trust-host-key and --accept-new
-accept that new key without a prompt. A changed host key is still refused.
+The first time a host is seen, a terminal asks [Y]es to save the key, [O]nce
+to connect without saving, or [N]o. --trust-host-key and --accept-new accept
+that new key without a prompt. A changed host key warns and cancels unless you
+answer y to replace it. --trust-host-key does not accept a changed host key.
 
 Connect, run, ping, and trace do not need a Pro flag. Scan follows the port scanner flag.
 Over HTTP, scan, wait, ping, trace, and the event stream follow the automation API flag.
@@ -367,11 +367,21 @@ The credential value is a name, not a password. Set JACKEDIN_CRED_<NAME>.
 backup stores a timestamped copy. diff prints a unified diff.
 --baud-autosense tries 9600, 19200, 38400, 57600, and 115200. It is off unless set.
 --wake sends CR and break with backoff when a console stays quiet.
+A serial console still gets one CR after a short silence unless --no-wake.
 --console-user and --console-password log in to a console server before the device.
 --audit FILE writes a local JSON line for each command: who, what, when, device, result.
 Passwords and one-time codes are not written there. --max-attempts caps login retries.
 --local-user is the fallback account when the AAA server is unreachable.
 --otp-timeout SEC waits for a Duo, RSA, or one-time-code prompt.
+--term TYPE is the SSH PTY and Telnet terminal type: xterm-256color
+(default), vt100, vt220, or ansi.
+--no-legacy-ssh turns off old SSH algorithms. They stay on by default
+so older network gear can connect. A legacy algorithm is named when used.
+--enable-password-env VAR reads the enable secret from that variable.
+It is not stored, logged, or shown.
+--password-stdin reads the password from one stdin line. JACKEDIN_PASSWORD
+is used when --password and --password-stdin are omitted.
+--trace-io prints each chunk sent or received as a timestamp and hex on stderr.
 ```
 
 ### Flags on `connect`
@@ -501,7 +511,7 @@ JackedIN does not do that. `jackedin exec` reads the whole list first, then send
 
 `jackedin.exe` is the window. It is a Windows GUI program, so `cmd` and `.bat` redirection does not capture it: `jackedin.exe --version > out.txt` leaves an empty file. PowerShell is not a guide for that; `cmd` is the case that fails.
 
-The installer and the Windows zip include `jackedin.com` in the same folder. It is a console program with the same commands, the same exit codes, and Ctrl+C. When both files are in the folder you run, `jackedin` in `cmd` is `jackedin.com`, because Windows tries `.com` before `.exe`.
+The Windows zip includes `jackedin.com` in the same folder. It is a console program with the same commands, the same exit codes, and Ctrl+C. When both files are in the folder you run, `jackedin` in `cmd` is `jackedin.com`, because Windows tries `.com` before `.exe`.
 
 ```bat
 jackedin --version > ver.txt
@@ -509,7 +519,7 @@ jackedin exec --host 192.0.2.10 --trust-host-key --json show version > out.txt
 jackedin exec --serial COM5 --baud 9600 --user root --password secret show version | findstr JUNOS
 ```
 
-If that folder is not on PATH, call `jackedin.com` by its full path. Do not point a script at `jackedin.exe`. Double-click `jackedin.exe`, or use the Start menu shortcut, to open the window. That does not open a console. `jackedin.com` with no arguments starts the same window.
+If that folder is not on PATH, call `jackedin.com` by its full path. Do not point a script at `jackedin.exe`. Double-click `jackedin.exe` to open the window. That does not open a console. `jackedin.com` with no arguments starts the same window.
 
 A paste of 20 lines or more asks before it is sent. The lines then go out one at a time, not as one block.
 

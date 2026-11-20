@@ -2,7 +2,7 @@
 
 Copyright © 2026 JackedIN. All rights reserved.
 
-JackedIN™ is an SSH, Telnet, and serial terminal. It has a desktop window and a full command line. This guide covers both, on Windows and on Linux. A macOS build is coming soon. JackedIN™ is an unregistered trademark. The software is offered under the proprietary end-user license in `LICENSE/EULA.txt`, not under an open-source license.
+JackedIN™ is an SSH, Telnet, and serial terminal. It has a desktop window and a full command line. This guide covers both, on Windows, on Linux, and on Raspberry Pi (64-bit). A macOS build is coming soon. JackedIN™ is an unregistered trademark. The software is offered under the proprietary end-user license in `LICENSE/EULA.txt`, not under an open-source license.
 
 The command is `jackedin`. With no arguments it opens the window. With a command it stays in the terminal, prints a result or an error, and exits. An unknown command or flag prints usage and exits with status 2. It does not open the window.
 
@@ -27,6 +27,29 @@ sudo apt install ./JackedIN_1.1.1_amd64.deb
 ```
 
 The package depends on WebKitGTK 4.1, GTK 3, Ayatana AppIndicator, iputils-ping, and traceroute (or iputils-tracepath). The command is `jackedin`. The user's guide is installed with the package resources (this file and the HTML copy).
+
+Pick the file for your computer. `amd64` and `x64` files are for a PC (64-bit Intel or AMD). `arm64` files are for a Raspberry Pi.
+
+| File | For |
+| --- | --- |
+| `JackedIN_1.1.1_amd64.deb` | Ubuntu or Debian on a PC (amd64) |
+| `JackedIN_1.1.1_Linux_x64.zip` | Other Linux on a PC (x64), portable |
+| `JackedIN_1.1.1_arm64.deb` | Raspberry Pi OS 64-bit (arm64) |
+| `JackedIN_1.1.1_Linux_arm64.zip` | Raspberry Pi OS 64-bit (arm64), portable |
+
+### Raspberry Pi (64-bit)
+
+JackedIN runs on a Raspberry Pi 4 or 5 with Raspberry Pi OS 64-bit (arm64), based on Debian 13 (trixie). It was tested on a Raspberry Pi 4. The 32-bit Raspberry Pi OS is not supported, and the package does not install on releases based on Debian 12 (bookworm). `uname -m` prints `aarch64` on a 64-bit system.
+
+Install the Raspberry Pi package:
+
+```bash
+sudo apt install ./JackedIN_1.1.1_arm64.deb
+```
+
+The package depends on WebKitGTK 4.1, GTK 3, libsoup 3, Ayatana AppIndicator, iputils-ping, and traceroute (or iputils-tracepath); apt installs them. The command is `jackedin`, and `jackedin --version` prints `1.1.1`.
+
+To run without installing, unzip `JackedIN_1.1.1_Linux_arm64.zip` and run `./jackedin` from that folder. The zip holds the program and this guide. The portable program needs the same libraries as the package (WebKitGTK 4.1, GTK 3, and libsoup 3); installing the package once is the easiest way to get them.
 
 ### macOS
 

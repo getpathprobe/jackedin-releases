@@ -21,6 +21,7 @@ Get the latest version from the [Releases page](https://github.com/getpathprobe/
 | Raspberry Pi OS 64-bit (arm64) | `JackedIN_1.2.0_arm64.deb` |
 | Raspberry Pi OS 64-bit portable | `jackedin_1.2.0_linux_arm64.tar.gz` |
 | Raspberry Pi OS 64-bit portable binary only | `jackedin_1.2.0_linux_arm64` |
+| Python client / Nornir plugin (any OS) | `jackedin-1.2.0-py3-none-any.whl`, `nornir_jackedin-1.2.0-py3-none-any.whl` |
 
 Verify downloads with `SHA256SUMS`.
 
@@ -39,6 +40,17 @@ jackedin --version
 sudo apt install ./JackedIN_1.2.0_arm64.deb
 jackedin --version
 ```
+
+## Python
+
+The `jackedin` Python client and the `nornir-jackedin` Nornir plugin are attached to the 1.2.0 release. They are free and drive the installed JackedIN app (72-hour trial, then a license):
+
+```sh
+pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/jackedin-1.2.0-py3-none-any.whl
+pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/nornir_jackedin-1.2.0-py3-none-any.whl
+```
+
+See `JackedIN-Python-Guide.md`. Examples and CI recipes are in `jackedin-python-examples-1.2.0.zip`.
 
 ## License
 

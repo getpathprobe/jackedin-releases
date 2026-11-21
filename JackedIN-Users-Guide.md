@@ -564,3 +564,36 @@ The config directory name is `jackedin`, from `brand.json`.
 | Logs | `Documents\JackedIN\Logs` | `~/Documents/JackedIN/Logs` |
 | Host keys trusted in the app | inside the settings directory | the same, plus `~/.ssh/known_hosts` |
 | Key passphrases | Windows credential store | Secret Service (secret-tool) |
+
+## Python
+
+A Python script can call the same `jackedin` command the terminal uses. That keeps one SSH engine, the dry-run that does not connect, and the YAML expect rules. Install it from the JackedIN 1.2.0 release with `pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/jackedin-1.2.0-py3-none-any.whl`. For Nornir, also run `pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/nornir_jackedin-1.2.0-py3-none-any.whl`. The packages are not on PyPI yet. Check them against `SHA256SUMS`. The packages are free. They drive this app, so the 72-hour trial or a license is needed, the same as the terminal. Tested on real Juniper hardware before release.
+
+Set `JACKEDIN_BIN` when the program is not on `PATH`. The examples use `192.0.2.10`, `router1`, and the user `netops`.
+
+```python
+from jackedin import Jackedin
+
+device = Jackedin("192.0.2.10", username="netops")
+plan = device.dry_run(["show version"])
+report = device.run(["show version"])
+print(device.commit_confirmed(minutes=5).text)
+```
+
+`dry_run` and `commit_confirmed` print a plan and do not connect. `run` and `connect` use `jackedin exec`. A saved session is `Jackedin.from_session("router1")`. SSH and Telnet default the user to `netops`. A serial session does not pass `--user` unless you set `username`. JackedIN 1.2.0 does not answer a bare `Password:` prompt when `--user` is set, so leave `username` unset on a password-only console. These basic library features are free.
+
+A password is `JACKEDIN_PASSWORD`, or the `password` argument, which the library writes to `--password-stdin`. It is not a command-line argument and it is not logged. Do not pass `--password`.
+
+Expect rules are a YAML string, `ExpectRule` values, or a list of dicts such as `{"command": "show version", "expect_match": "Version"}`. Anything else raises `UsageError`. `import jackedin` does not require pytest. The check helpers load when you use them and need `pip install pytest`.
+
+An enable secret is the `enable` or `secret` argument, or a Nornir extra of the same name. It is passed with `--enable-password-env` and the value stays in that environment variable. It is not logged. On a Cisco session, or a serial session with no vendor, `enable` is sent once before the other commands. Junos does not get that command.
+
+Do not put `exit`, `logout`, or `quit` last when expect rules are set. The library refuses that. The console would be back at `login:`, and a check must not be typed as a username.
+
+`JackedinDevice.send_config_set` on Junos runs `configure private`, then `rollback 0` and `exit`. The shared candidate is left clean and nothing is committed. `commit=True` uses `configure exclusive` and `commit confirmed`, then `rollback 0` and `exit` even when a command fails, so the exclusive lock is released. `rollback 0` after a successful commit confirmed reloads that commit and does not cancel the timer. Cisco `send_config_set` still uses `configure terminal` and `end`, and `commit=True` is refused because Cisco has no commit confirmed.
+
+`nornir-jackedin` registers a Nornir connection named `jackedin` and the tasks `jackedin_send_command`, `jackedin_send_config`, and `jackedin_commit_confirmed`. Nornir needs Python 3.10 or newer.
+
+`assert_matches` and the `jackedin_expect` pytest fixture check a captured config against an expect file. They do not open a session.
+
+The longer recipe is `JackedIN-Python-Guide.md` on the release. A notebook (`jackedin.ipynb`) and a short script (`python-recipe.py`) are in `jackedin-python-examples-1.2.0.zip`. If a library call fails with `JackedIN did not return JSON.`, run `jackedin license status`: the trial may have ended.

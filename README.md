@@ -25,6 +25,9 @@ Get the latest version from the [Releases page](https://github.com/getpathprobe/
 
 Verify downloads with `SHA256SUMS`.
 
+## Video tutorials
+Watch the tutorials on YouTube: https://www.youtube.com/@BeenThere.BuiltThat
+
 ## Install
 
 **Windows:** unzip `jackedin_1.2.1_windows_x64.zip` and run `jackedin.exe` (scripts use `jackedin.com`). No admin rights are needed. An installer is also available: `JackedIN_1.2.1_x64-setup.exe`. It is not code-signed, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**.

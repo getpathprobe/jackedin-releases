@@ -43,7 +43,14 @@ jackedin --version
 
 ## Python
 
-The `jackedin` Python client and the `nornir-jackedin` Nornir plugin are attached to the 1.2.0 release. They are free and drive the installed JackedIN app (72-hour trial, then a license):
+The `jackedin` Python client and the `nornir-jackedin` Nornir plugin are on PyPI. They are free and drive the installed JackedIN app (72-hour trial, then a license):
+
+```sh
+pip install jackedin
+pip install nornir-jackedin
+```
+
+The same wheels are also on the 1.2.0 release:
 
 ```sh
 pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/jackedin-1.2.0-py3-none-any.whl

@@ -4,19 +4,26 @@ JackedIN already speaks `jackedin exec`, dry-run, and YAML expect rules. The Pyt
 
 ## Install
 
-The packages are attached to the JackedIN 1.2.0 release. They are not on PyPI yet. You need JackedIN 1.2.0 installed, and Python 3.9 or newer (3.10 or newer for Nornir).
+Install from PyPI. You need JackedIN 1.2.0 installed, and Python 3.9 or newer (3.10 or newer for Nornir).
 
 ```bash
-pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/jackedin-1.2.0-py3-none-any.whl
+pip install jackedin
 ```
 
 For Nornir, install `jackedin` first, then:
 
 ```bash
+pip install nornir-jackedin
+```
+
+The same wheels are also on the JackedIN 1.2.0 release:
+
+```bash
+pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/jackedin-1.2.0-py3-none-any.whl
 pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/nornir_jackedin-1.2.0-py3-none-any.whl
 ```
 
-Check the downloads against `SHA256SUMS` on the same release. The pytest helpers (`assert_matches`, the `jackedin_expect` fixture) also need `pip install pytest`.
+Check a release-URL install against `SHA256SUMS` on the same release. The pytest helpers (`assert_matches`, the `jackedin_expect` fixture) also need `pip install pytest`.
 
 Set `JACKEDIN_BIN` to the `jackedin` program when it is not on `PATH`. On Windows that is `jackedin.com` from the portable zip, or the installed copy.
 
@@ -147,7 +154,7 @@ device.disconnect()
 ## Nornir
 
 ```bash
-pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/nornir_jackedin-1.2.0-py3-none-any.whl
+pip install nornir-jackedin
 ```
 
 ```python

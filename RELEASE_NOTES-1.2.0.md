@@ -33,11 +33,18 @@ The JackedIN app and its downloads above are unchanged. Two Python packages and 
 The packages are free. They drive the JackedIN app, so the 72-hour trial or a license is needed, the same as the terminal. Tested on real Juniper hardware; the packages passed a live license check with this release's app.
 
 ```sh
+pip install jackedin
+pip install nornir-jackedin
+```
+
+The same wheels are also on this release (check them against `SHA256SUMS`):
+
+```sh
 pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/jackedin-1.2.0-py3-none-any.whl
 pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/nornir_jackedin-1.2.0-py3-none-any.whl
 ```
 
-The packages are not on PyPI yet. See `JackedIN-Python-Guide.md` and the Python section of the user's guide.
+See `JackedIN-Python-Guide.md` and the Python section of the user's guide.
 
 ## Known issues
 
@@ -59,7 +66,7 @@ The packages are not on PyPI yet. See `JackedIN-Python-Guide.md` and the Python 
 | `jackedin_1.2.0_linux_arm64.tar.gz` | Raspberry Pi OS 64-bit, portable (binary + user's guide) |
 | `jackedin_1.2.0_linux_arm64` | Raspberry Pi OS 64-bit, portable binary only |
 | `EULA.txt`, `JackedIN-Users-Guide.html`, `JackedIN-Users-Guide.md` | License agreement and user's guide |
-| `jackedin-1.2.0-py3-none-any.whl` | Python client (`pip install` the release URL) |
+| `jackedin-1.2.0-py3-none-any.whl` | Python client (`pip install jackedin`, or this wheel) |
 | `nornir_jackedin-1.2.0-py3-none-any.whl` | Nornir plugin (install after `jackedin`) |
 | `JackedIN-Python-Guide.md` | Python guide: install, dry-run, expect rules, Junos commit, enable mode, Nornir, pytest |
 | `jackedin-python-examples-1.2.0.zip` | Notebook, Python recipe, and CI and credential recipes |

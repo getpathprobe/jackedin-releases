@@ -567,7 +567,7 @@ The config directory name is `jackedin`, from `brand.json`.
 
 ## Python
 
-A Python script can call the same `jackedin` command the terminal uses. That keeps one SSH engine, the dry-run that does not connect, and the YAML expect rules. Install it from the JackedIN 1.2.0 release with `pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/jackedin-1.2.0-py3-none-any.whl`. For Nornir, also run `pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/nornir_jackedin-1.2.0-py3-none-any.whl`. The packages are not on PyPI yet. Check them against `SHA256SUMS`. The packages are free. They drive this app, so the 72-hour trial or a license is needed, the same as the terminal. Tested on real Juniper hardware before release.
+A Python script can call the same `jackedin` command the terminal uses. That keeps one SSH engine, the dry-run that does not connect, and the YAML expect rules. Install with `pip install jackedin`. For Nornir, also run `pip install nornir-jackedin`. The same wheels are also on the JackedIN 1.2.0 release; check a release-URL install against `SHA256SUMS`. The packages are free. They drive this app, so the 72-hour trial or a license is needed, the same as the terminal. Tested on real Juniper hardware before release.
 
 Set `JACKEDIN_BIN` when the program is not on `PATH`. The examples use `192.0.2.10`, `router1`, and the user `netops`.
 

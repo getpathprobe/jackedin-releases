@@ -15,17 +15,17 @@ pre { white-space: pre-wrap; font-family: ui-monospace, monospace; background: #
 
 Copyright © 2026 JackedIN. All rights reserved.
 
-JackedIN™ is an SSH, Telnet, and serial terminal. It has a desktop window and a full command line. This guide covers both, on Windows, on Linux, and on Raspberry Pi (64-bit). A macOS build is coming soon. JackedIN™ is an unregistered trademark. The software is offered under the proprietary end-user license in `LICENSE/EULA.txt`, not under an open-source license.
+JackedIN™ is an SSH, Telnet, and serial terminal. It has a desktop window and a full command line. This guide covers both, on Windows and on Linux. A macOS build is coming soon. JackedIN™ is an unregistered trademark. The software is offered under the proprietary end-user license in `LICENSE/EULA.txt`, not under an open-source license.
 
 The command is `jackedin`. With no arguments it opens the window. With a command it stays in the terminal, prints a result or an error, and exits. An unknown command or flag prints usage and exits with status 2. It does not open the window.
 
-SFTP file transfer is not included.
+SFTP and SCP use `jackedin sftp put` and `jackedin sftp get`, and Copy file in the window. The transfer uses the SSH SFTP channel.
 
 ## Install
 
 ### Windows
 
-Unzip the Windows portable zip and run `jackedin.exe`. The user's guide files sit next to the executable. Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.1.1` when you run the console program.
+Unzip the Windows portable zip and run `jackedin.exe`. The user's guide files sit next to the executable. Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.2.0` when you run the console program.
 
 Windows SmartScreen may say “Windows protected your PC” because the program is not signed. Choose **More info**, then **Run anyway**.
 
@@ -40,29 +40,6 @@ sudo apt install ./JackedIN_1.1.1_amd64.deb
 ```
 
 The package depends on WebKitGTK 4.1, GTK 3, Ayatana AppIndicator, iputils-ping, and traceroute (or iputils-tracepath). The command is `jackedin`. The user's guide is installed with the package resources (this file and the HTML copy).
-
-Pick the file for your computer. `amd64` and `x64` files are for a PC (64-bit Intel or AMD). `arm64` files are for a Raspberry Pi.
-
-| File | For |
-| --- | --- |
-| `JackedIN_1.1.1_amd64.deb` | Ubuntu or Debian on a PC (amd64) |
-| `JackedIN_1.1.1_Linux_x64.zip` | Other Linux on a PC (x64), portable |
-| `JackedIN_1.1.1_arm64.deb` | Raspberry Pi OS 64-bit (arm64) |
-| `JackedIN_1.1.1_Linux_arm64.zip` | Raspberry Pi OS 64-bit (arm64), portable |
-
-### Raspberry Pi (64-bit)
-
-JackedIN runs on a Raspberry Pi 4 or 5 with Raspberry Pi OS 64-bit (arm64), based on Debian 13 (trixie). It was tested on a Raspberry Pi 4. The 32-bit Raspberry Pi OS is not supported, and the package does not install on releases based on Debian 12 (bookworm). `uname -m` prints `aarch64` on a 64-bit system.
-
-Install the Raspberry Pi package:
-
-```bash
-sudo apt install ./JackedIN_1.1.1_arm64.deb
-```
-
-The package depends on WebKitGTK 4.1, GTK 3, libsoup 3, Ayatana AppIndicator, iputils-ping, and traceroute (or iputils-tracepath); apt installs them. The command is `jackedin`, and `jackedin --version` prints `1.1.1`.
-
-To run without installing, unzip `JackedIN_1.1.1_Linux_arm64.zip` and run `./jackedin` from that folder. The zip holds the program and this guide. The portable program needs the same libraries as the package (WebKitGTK 4.1, GTK 3, and libsoup 3); installing the package once is the easiest way to get them.
 
 ### macOS
 
@@ -298,16 +275,25 @@ The block below is the program's `--help` text.
 JackedIN commands
 jackedin                     open the window
 jackedin --help              show this text and exit (no display needed)
+jackedin examples            print short examples and exit
+jackedin update-check        ask whether a newer release is listed. Nothing is installed.
+jackedin completions bash|zsh|powershell
+--quiet and JACKEDIN_QUIET=1 hide the connected banner.
+JACKEDIN_JSON=1, JACKEDIN_TIMEOUT, and JACKEDIN_LOG match --json, --timeout, and --log.
 jackedin --version           print the version and exit (no display needed)
 jackedin connect --host H [--user U] [--password P] [--key FILE] [--passphrase P]
+jackedin connect --host 192.0.2.10 --user lab --credential op://Lab/router1/password
 jackedin connect --host H --trust-host-key [--cmd 'show ver'] [--expect '#']
 --cmd runs on an SSH exec channel, so the login banner and the prompt are not included.
 jackedin connect --protocol telnet --host 192.0.2.10 --port 23
 jackedin connect --protocol serial --host COM5 --port 9600
 jackedin connect --protocol serial --serial /dev/ttyUSB0 --baud 9600 --data-bits 8 --parity none --stop-bits 1 --flow none
 jackedin ports [--all]         list serial ports (COM and /dev/tty*)
+jackedin xmodem|ymodem|zmodem send|recv --serial /dev/ttyUSB0 --file router1.txt
+jackedin inventory sync --source netbox|nautobot --url https://netbox.example.com [--token-env VAR] [--filter site=lab,role=router,tag=edge] [--dry-run] [--json] [--prune] [--ca-bundle FILE] [--export ansible]
 jackedin connect --session "Lab switch" [--cmd 'show ver'] [--expect '#']
 jackedin exec --host H --trust-host-key [--json] [--output json] [--template FILE] [--timeout SEC] [--prompt REGEX] [commands...]
+jackedin sftp put|get --host 192.0.2.10 --user lab --local FILE --remote /tmp/router1.txt
 jackedin exec --session "Lab switch" --file commands.txt
 jackedin break SESSION_ID [--ms 300]
 jackedin check HOST[:PORT]
@@ -315,6 +301,10 @@ jackedin run --session "Lab switch" --cmd 'show ver' --expect '#'
 jackedin scan --host H [--ports 22,80,443]
 jackedin ping --host H
 jackedin trace --host H [--source IP] [--port 22]
+jackedin pathprobe traceroute --target 192.0.2.10 --iface IFACE
+Arguments after pathprobe are passed to PathProbe. It has no --host. --interface is --iface.
+A traceroute without --iface uses the default route's interface and skips a down or virtual interface such as docker0.
+When none can be chosen, the hint lists the interface names on this computer.
 jackedin headless            serve the local API (it must be enabled in settings)
 jackedin license activate KEY   activate this computer with a license key
 jackedin license status         show whether this build is licensed
@@ -324,8 +314,12 @@ jackedin mcp                 stdio MCP server for the local API (127.0.0.1 only)
 jackedin --bench-connect user@host[:port]
 jackedin --bench-launch        print ms until the first visible paint, then exit
 jackedin --diag-capture        write capture checks and a short start attempt to a file
-jackedin fleet --inventory FILE [--cmd CMD] [--concurrency N] [--output json]
-jackedin backup --host H --file FILE [--dir DIR]
+jackedin fleet --inventory FILE [--cmd CMD] [--concurrency N] [--output json] [--dry-run]
+--dry-run prints the command plan and sends nothing. It does not connect.
+--expect-file FILE adds checks on top of --verify and --expect-match.
+jackedin change junos --minutes 5   print commit confirmed, confirm, and rollback
+jackedin change cisco               print configure replace and reload-in guidance
+jackedin backup --host H [--session NAME] [--file FILE] [--dir DIR] [--vendor ios|junos]
 jackedin diff LEFT RIGHT
 
 Serial --host (or --serial / --device) is the device path: COM5 on Windows,
@@ -400,7 +394,13 @@ not bundle a third-party template pack.
 fleet reads CSV or simple YAML (host, port, protocol, profile, credential, user).
 A user column, or a global --user, is sent to that device.
 The credential value is a name, not a password. Set JACKEDIN_CRED_<NAME>.
-backup stores a timestamped copy. diff prints a unified diff.
+If that variable is unset, JackedIN looks up cred:<NAME> in the OS keychain,
+then credentials.vault opened with JACKEDIN_VAULT_KEY.
+jackedin credential set NAME reads one line from stdin and stores it.
+The value is not printed.
+jackedin import --from ssh|putty|securecrt|mobaxterm --path FILE [--dry-run]
+A password in an imported file is not saved. It can be offered to the vault.
+When --file is a local file, backup stores that file. Otherwise backup connects with the saved session or credential, turns paging off, and stores show running-config (show configuration | display set on Junos). diff prints a unified diff.
 --baud-autosense tries 9600, 19200, 38400, 57600, and 115200. It is off unless set.
 --wake sends CR and break with backoff when a console stays quiet.
 A serial console still gets one CR after a short silence unless --no-wake.
@@ -563,9 +563,9 @@ A service account should set `JACKEDIN_CONFIG_DIR` and `JACKEDIN_KNOWN_HOSTS` to
 
 ## Local API and MCP
 
-The local API is off until you turn it on in Settings. JackedIN listens on `127.0.0.1` only (port 47321 unless you change it) and requires `Authorization: Bearer <token>`. Saving the checkbox starts the listener in the window you already have open. `jackedin headless` serves the same API. Open, send, and close work without the Pro API flag. Scan, wait, ping, traceroute, and the event stream follow that flag.
+The local API is off until you turn it on in Settings. JackedIN listens on `127.0.0.1` only (port 47321 unless you change it) and requires `Authorization: Bearer <token>`. Saving the checkbox starts the listener in the window you already have open. `jackedin headless` serves the same API. Open, send, read, close, verified exec (`POST /v1/exec` and `POST /v1/sessions/{id}/exec`), and break (`POST /v1/sessions/{id}/break`) work without the `automationApi` setting. Scan, wait, ping, traceroute, and the event stream (`GET /v1/events`) follow `automationApi`. That setting is in `features.json`. It is not a separate Pro flag.
 
-`jackedin mcp` is a stdio MCP server for that API. It dials 127.0.0.1 only. Leave JackedIN open with the API turned on. The token is `JACKEDIN_API_TOKEN` if that variable is set, otherwise the token saved in Settings. `JACKEDIN_API_PORT` overrides the port. Tools are `list_sessions`, `open_session`, `send_session`, `read_session`, `close_session`, `wait_for_output`, `scan_ports`, `ping_host`, `trace_host`, and `read_events`. The wait, scan, ping, trace, and events tools follow the Pro API flag. `scan_ports` tells the caller to only scan devices they are allowed to test. Example requests are in `docs/openapi.yaml` and `docs/examples/`.
+`jackedin mcp` is a stdio MCP server for that API. It dials 127.0.0.1 only. Leave JackedIN open with the API turned on. The token is `JACKEDIN_API_TOKEN` if that variable is set, otherwise the token saved in Settings. `JACKEDIN_API_PORT` overrides the port. Tools are `list_sessions`, `open_session`, `send_session`, `exec`, `send_break`, `read_session`, `close_session`, `wait_for_output`, `scan_ports`, `ping_host`, `trace_host`, and `read_events`. `exec` and `send_break` use the local API token and do not require `automationApi`. The wait, scan, ping, trace, and events tools follow `automationApi`. `scan_ports` tells the caller to only scan devices they are allowed to test. The request shapes, sample inventory, exec and TextFSM examples, and the exit-code table are in `docs/openapi.yaml` and `docs/examples/`.
 
 ## Where things are stored
 

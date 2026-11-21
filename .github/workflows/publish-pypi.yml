@@ -1,0 +1,119 @@
+# Publish already-built, license-checked release wheels to PyPI.
+# Trusted Publishing (OIDC) only: no tokens or secrets are stored in this repo.
+# Trigger: gh workflow run publish-pypi.yml -f tag=v1.2.0
+name: Publish to PyPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag whose pre-built wheels to publish
+        required: true
+        default: v1.2.0
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  publish-jackedin:
+    name: Publish jackedin
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/jackedin
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Download and verify the jackedin wheel
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          packages="${RUNNER_TEMP}/pypi-packages"
+          checksums="${RUNNER_TEMP}/pypi-checksums"
+          mkdir -p "$packages" "$checksums"
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" \
+            -p 'jackedin-*-py3-none-any.whl' -D "$packages"
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" \
+            -p SHA256SUMS -D "$checksums"
+
+          shopt -s nullglob
+          wheels=("$packages"/jackedin-*-py3-none-any.whl)
+          if [ "${#wheels[@]}" -ne 1 ]; then
+            echo "expected exactly one jackedin wheel, found ${#wheels[@]}" >&2
+            ls -la "$packages" >&2 || true
+            exit 1
+          fi
+
+          wheel="${wheels[0]}"
+          name="$(basename "$wheel")"
+          expected="$(awk -v f="$name" '$2 == f { print $1; found=1 } END { exit !found }' "$checksums/SHA256SUMS")"
+          actual="$(sha256sum "$wheel" | awk '{ print $1 }')"
+          if [ "$actual" != "$expected" ]; then
+            echo "sha256 mismatch for $name: expected $expected, got $actual" >&2
+            exit 1
+          fi
+          echo "verified $name sha256 $actual"
+
+          # The publish action uploads every file in packages-dir. Leave only the wheel.
+          mkdir -p "${GITHUB_WORKSPACE}/packages"
+          mv "$wheel" "${GITHUB_WORKSPACE}/packages/$name"
+
+      - name: Publish jackedin to PyPI
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3 / release/v1
+        with:
+          packages-dir: packages
+
+  publish-nornir:
+    name: Publish nornir-jackedin
+    needs: publish-jackedin
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi-nornir
+      url: https://pypi.org/p/nornir-jackedin
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Download and verify the nornir-jackedin wheel
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          packages="${RUNNER_TEMP}/pypi-packages"
+          checksums="${RUNNER_TEMP}/pypi-checksums"
+          mkdir -p "$packages" "$checksums"
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" \
+            -p 'nornir_jackedin-*-py3-none-any.whl' -D "$packages"
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" \
+            -p SHA256SUMS -D "$checksums"
+
+          shopt -s nullglob
+          wheels=("$packages"/nornir_jackedin-*-py3-none-any.whl)
+          if [ "${#wheels[@]}" -ne 1 ]; then
+            echo "expected exactly one nornir_jackedin wheel, found ${#wheels[@]}" >&2
+            ls -la "$packages" >&2 || true
+            exit 1
+          fi
+
+          wheel="${wheels[0]}"
+          name="$(basename "$wheel")"
+          expected="$(awk -v f="$name" '$2 == f { print $1; found=1 } END { exit !found }' "$checksums/SHA256SUMS")"
+          actual="$(sha256sum "$wheel" | awk '{ print $1 }')"
+          if [ "$actual" != "$expected" ]; then
+            echo "sha256 mismatch for $name: expected $expected, got $actual" >&2
+            exit 1
+          fi
+          echo "verified $name sha256 $actual"
+
+          mkdir -p "${GITHUB_WORKSPACE}/packages"
+          mv "$wheel" "${GITHUB_WORKSPACE}/packages/$name"
+
+      - name: Publish nornir-jackedin to PyPI
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3 / release/v1
+        with:
+          packages-dir: packages

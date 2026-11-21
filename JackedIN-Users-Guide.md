@@ -12,7 +12,7 @@ SFTP and SCP use `jackedin sftp put` and `jackedin sftp get`, and Copy file in t
 
 ### Windows
 
-Unzip the Windows portable zip and run `jackedin.exe`. The user's guide files sit next to the executable. Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.2.0` when you run the console program.
+Unzip the Windows portable zip and run `jackedin.exe`. The user's guide files sit next to the executable. Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.2.1` when you run the console program.
 
 Windows SmartScreen may say “Windows protected your PC” because the program is not signed. Choose **More info**, then **Run anyway**.
 
@@ -304,6 +304,8 @@ jackedin --diag-capture        write capture checks and a short start attempt to
 jackedin fleet --inventory FILE [--cmd CMD] [--concurrency N] [--output json] [--dry-run]
 --dry-run prints the command plan and sends nothing. It does not connect.
 --expect-file FILE adds checks on top of --verify and --expect-match.
+If the session returns to login:, Username:, or Password:, later commands are not sent.
+Expect checks are then scored against output already captured. They are not typed at the login prompt.
 jackedin change junos --minutes 5   print commit confirmed, confirm, and rollback
 jackedin change cisco               print configure replace and reload-in guidance
 jackedin backup --host H [--session NAME] [--file FILE] [--dir DIR] [--vendor ios|junos]
@@ -347,6 +349,8 @@ like COM5 or /dev/ttyUSB0, even if --protocol is omitted.
 A serial --password is sent only after a Password: prompt has had no new bytes
 for a moment. A wrong password is not sent again. The password is never sent
 at a login: prompt. A shell prompt does not receive that password.
+A bare Password: prompt is answered even when --user is set. The username is
+sent only after login: or Username:.
 Telnet connect and exec do the same with --user and --password: login: receives
 the username, and Password: receives the password only after the prompt goes quiet.
 
@@ -567,7 +571,7 @@ The config directory name is `jackedin`, from `brand.json`.
 
 ## Python
 
-A Python script can call the same `jackedin` command the terminal uses. That keeps one SSH engine, the dry-run that does not connect, and the YAML expect rules. Install with `pip install jackedin`. For Nornir, also run `pip install nornir-jackedin`. The same wheels are also on the JackedIN 1.2.0 release; check a release-URL install against `SHA256SUMS`. The packages are free. They drive this app, so the 72-hour trial or a license is needed, the same as the terminal. Tested on real Juniper hardware before release.
+A Python script can call the same `jackedin` command the terminal uses. That keeps one SSH engine, the dry-run that does not connect, and the YAML expect rules. Install it with `pip install jackedin`. The same 1.2.0 wheel is `pip install https://github.com/getpathprobe/jackedin-releases/releases/download/v1.2.0/jackedin-1.2.0-py3-none-any.whl`.
 
 Set `JACKEDIN_BIN` when the program is not on `PATH`. The examples use `192.0.2.10`, `router1`, and the user `netops`.
 
@@ -580,11 +584,11 @@ report = device.run(["show version"])
 print(device.commit_confirmed(minutes=5).text)
 ```
 
-`dry_run` and `commit_confirmed` print a plan and do not connect. `run` and `connect` use `jackedin exec`. A saved session is `Jackedin.from_session("router1")`. SSH and Telnet default the user to `netops`. A serial session does not pass `--user` unless you set `username`. JackedIN 1.2.0 does not answer a bare `Password:` prompt when `--user` is set, so leave `username` unset on a password-only console. These basic library features are free.
+`dry_run` and `commit_confirmed` print a plan and do not connect. `run` and `connect` use `jackedin exec`. A saved session is `Jackedin.from_session("router1")`. SSH and Telnet default the user to `netops`. A serial session does not pass `--user` unless you set `username`. These basic library features are free.
 
 A password is `JACKEDIN_PASSWORD`, or the `password` argument, which the library writes to `--password-stdin`. It is not a command-line argument and it is not logged. Do not pass `--password`.
 
-Expect rules are a YAML string, `ExpectRule` values, or a list of dicts such as `{"command": "show version", "expect_match": "Version"}`. Anything else raises `UsageError`. `import jackedin` does not require pytest. The check helpers load when you use them and need `pip install pytest`.
+Expect rules are a YAML string, `ExpectRule` values, or a list of dicts such as `{"command": "show version", "expect_match": "Version"}`. Anything else raises `UsageError`. `import jackedin` does not require pytest. The check helpers load when you use them.
 
 An enable secret is the `enable` or `secret` argument, or a Nornir extra of the same name. It is passed with `--enable-password-env` and the value stays in that environment variable. It is not logged. On a Cisco session, or a serial session with no vendor, `enable` is sent once before the other commands. Junos does not get that command.
 
@@ -596,4 +600,4 @@ Do not put `exit`, `logout`, or `quit` last when expect rules are set. The libra
 
 `assert_matches` and the `jackedin_expect` pytest fixture check a captured config against an expect file. They do not open a session.
 
-The longer recipe is `JackedIN-Python-Guide.md` on the release. A notebook (`jackedin.ipynb`) and a short script (`python-recipe.py`) are in `jackedin-python-examples-1.2.0.zip`. If a library call fails with `JackedIN did not return JSON.`, run `jackedin license status`: the trial may have ended.
+The longer recipe is `docs/python.md`. A notebook is `docs/examples/jackedin.ipynb`. A short script is `docs/examples/python-recipe.py`.

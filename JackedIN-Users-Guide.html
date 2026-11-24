@@ -25,7 +25,7 @@ SFTP and SCP use `jackedin sftp put` and `jackedin sftp get`, and Copy file in t
 
 ### Windows
 
-Unzip the Windows portable zip and run `jackedin.exe`. The user's guide files sit next to the executable. Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.2.1` when you run the console program.
+Unzip the Windows portable zip and run `jackedin.exe`. The user's guide files sit next to the executable. Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.2.2` when you run the console program.
 
 Windows SmartScreen may say “Windows protected your PC” because the program is not signed. Choose **More info**, then **Run anyway**.
 
@@ -76,7 +76,7 @@ Those commands also require the license agreement. `jackedin eula` prints the pa
 
 The first license check on a computer starts JackedIN's 3-day trial. For 72 hours the window, the command line, and the local API all work without a license key. The window shows `Trial: 2 days 5 h left, Buy / Enter license` on a banner and in the status bar. **Buy** opens the purchase page. **Enter license** is the same Activate box used after the trial. Help → About and Settings → About show Trial. `jackedin license status` prints that countdown. The local API `GET /v1/health` response includes a `trial` field (`state`, `expiresAt`, `remainingSeconds`, `message`).
 
-Windows stores the trial in `%APPDATA%\JackedIN` and in the registry key `HKCU\Software\JackedIN`. Linux stores it in `~/.config/jackedin` and `~/.local/share/jackedin`. Each copy is tied to that computer. Uninstalling JackedIN does not delete those markers, on Windows or on Linux, so installing again does not start a new 3 days. Removing one copy while the other remains ends the trial. Setting the clock back more than a few minutes ends it too.
+Windows stores the trial in `%APPDATA%\JackedIN` and in the registry key `HKCU\Software\JackedIN`. Linux stores it in `~/.config/jackedin` and `~/.local/share/jackedin`. The first start is also registered for this computer with the activation service, and when the directory is writable JackedIN keeps a copy in `%ProgramData%\JackedIN` or `/var/lib/jackedin`. Deleting the config folder, or signing in as another user on the same computer, does not start a second 72 hours. If the computer is offline, the trial still starts and is checked on every launch until the activation service answers. That answer replaces the local start with the earliest one for this computer. After a day offline without that answer, the trial waits until the computer can connect once, then it works offline again. Uninstalling JackedIN does not delete the local markers, so installing again does not start a new 3 days. Removing one local copy while the other remains ends the trial. Setting the clock back more than a few minutes ends it too. A licensed computer does not register a trial.
 
 When the 72 hours are up, the window, the command line, and the API lock. The message is **Trial expired, buy a license**, followed by the purchase page and `jackedin license activate`. Entering a valid key and activating this computer ends the trial and unlocks the copy. Later launches check that activation offline. A licensed user does not see the trial banner.
 
@@ -274,6 +274,7 @@ The block below is the program's `--help` text.
 ```
 JackedIN commands
 jackedin                     open the window
+jackedin --allow-write       open the window and pre-approve agent writes for this run
 jackedin --help              show this text and exit (no display needed)
 jackedin examples            print short examples and exit
 jackedin update-check        ask whether a newer release is listed. Nothing is installed.
@@ -293,6 +294,7 @@ jackedin xmodem|ymodem|zmodem send|recv --serial /dev/ttyUSB0 --file router1.txt
 jackedin inventory sync --source netbox|nautobot --url https://netbox.example.com [--token-env VAR] [--filter site=lab,role=router,tag=edge] [--dry-run] [--json] [--prune] [--ca-bundle FILE] [--export ansible]
 jackedin connect --session "Lab switch" [--cmd 'show ver'] [--expect '#']
 jackedin exec --host H --trust-host-key [--json] [--output json] [--template FILE] [--timeout SEC] [--prompt REGEX] [commands...]
+jackedin plink [user@]host [command]   PuTTY plink flags; each line waits for the prompt
 jackedin sftp put|get --host 192.0.2.10 --user lab --local FILE --remote /tmp/router1.txt
 jackedin exec --session "Lab switch" --file commands.txt
 jackedin break SESSION_ID [--ms 300]
@@ -311,6 +313,11 @@ jackedin license status         show whether this build is licensed
 jackedin eula accept            record acceptance of the license agreement
 jackedin eula                   show the agreement file and whether it was accepted
 jackedin mcp                 stdio MCP server for the local API (127.0.0.1 only)
+MCP and the local API are read-only. show, display, get, ping, and traceroute run.
+A command that would change the device waits for a person. Denial or a timeout means it does not run.
+An agent cannot approve it. There is no MCP tool or API field that grants approval.
+A person can pre-approve one session in the window, list hosts in Settings, or start with --allow-write.
+jackedin exec and the window itself are not limited by this.
 jackedin --bench-connect user@host[:port]
 jackedin --bench-launch        print ms until the first visible paint, then exit
 jackedin --diag-capture        write capture checks and a short start attempt to a file
@@ -529,6 +536,27 @@ The API and MCP connection object accepts `keepaliveEnabled`, `keepaliveInterval
 
 ## Moving from plink
 
+### Replace plink in one word
+
+Change `plink` to `jackedin plink`. On Windows scripts, `jackedin.com plink` is the console program. The flags stay. Each line from `-m`, stdin, or the trailing command is sent only after the device prompt comes back, including through `--More--`. `-m` reads that file and does not also read stdin. A UTF-8 BOM at the start of the file or of stdin is not sent to the device.
+
+```bat
+plink -batch -ssh admin@192.0.2.10 -m commands.txt
+jackedin plink -batch -ssh admin@192.0.2.10 -m commands.txt
+```
+
+```bat
+plink -telnet -P 23 192.0.2.10
+jackedin plink -telnet -P 23 192.0.2.10 show version
+```
+
+```bat
+plink -serial -sercfg 9600,8,n,1,N COM5 -m commands.txt
+jackedin plink -serial -sercfg 9600,8,n,1,N COM5 -m commands.txt
+```
+
+`-batch` still refuses a changed host key. It does not accept one silently. `--line-delay`, `--char-delay`, `--wait-for-echo`, `--timeout`, and `--json` work on the same command. `-raw`, port forwards (`-L`, `-R`, `-D`), and `-proxycmd` are refused so they are not quietly ignored. `jackedin plink` is included with the trial and with a license.
+
 | plink | JackedIN |
 | --- | --- |
 | `echo y \| plink ...` | `--hostkey SHA256:...` (repeatable) or `--hostkey-policy accept-new`. A changed key is never accepted in the background. The error is JSON: `{"error":"hostkey_mismatch","expected":[...],"got":"..."}`. |
@@ -568,6 +596,8 @@ A service account should set `JACKEDIN_CONFIG_DIR` and `JACKEDIN_KNOWN_HOSTS` to
 ## Local API and MCP
 
 The local API is off until you turn it on in Settings. JackedIN listens on `127.0.0.1` only (port 47321 unless you change it) and requires `Authorization: Bearer <token>`. Saving the checkbox starts the listener in the window you already have open. `jackedin headless` serves the same API. Open, send, read, close, verified exec (`POST /v1/exec` and `POST /v1/sessions/{id}/exec`), and break (`POST /v1/sessions/{id}/break`) work without the `automationApi` setting. Scan, wait, ping, traceroute, and the event stream (`GET /v1/events`) follow `automationApi`. That setting is in `features.json`. It is not a separate Pro flag.
+
+MCP and the local API are read-only. `show`, `display`, `get`, `ping`, and `traceroute` run. A command that would change the device, such as `configure`, `commit`, `write`, `copy`, `reload`, or `request system reboot`, pauses until a person approves it. The window comes forward and names the command, the host, and the session. `jackedin headless` asks on the terminal: type `allow` or `deny`. Denial, or 60 seconds with no answer, means the command is not sent. Every request, approval, and denial is written to `jackedin.log`. An agent cannot approve itself: there is no MCP tool, flag, or API field that grants approval. `--allow-write` on `jackedin mcp` is ignored. A person can pre-approve one open session from the status bar, list hosts under Settings, API, or start the window or `jackedin headless` with `--allow-write`. The window and `jackedin exec` are unchanged. This approval is included with the trial and with a license. After the trial, the local API is already locked, and write approval stays off if the Pro flag `agentWrite` is off.
 
 `jackedin mcp` is a stdio MCP server for that API. It dials 127.0.0.1 only. Leave JackedIN open with the API turned on. The token is `JACKEDIN_API_TOKEN` if that variable is set, otherwise the token saved in Settings. `JACKEDIN_API_PORT` overrides the port. Tools are `list_sessions`, `open_session`, `send_session`, `exec`, `send_break`, `read_session`, `close_session`, `wait_for_output`, `scan_ports`, `ping_host`, `trace_host`, and `read_events`. `exec` and `send_break` use the local API token and do not require `automationApi`. The wait, scan, ping, trace, and events tools follow `automationApi`. `scan_ports` tells the caller to only scan devices they are allowed to test. The request shapes, sample inventory, exec and TextFSM examples, and the exit-code table are in `docs/openapi.yaml` and `docs/examples/`.
 

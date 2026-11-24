@@ -14,33 +14,32 @@ Get the latest version from the [Releases page](https://github.com/getpathprobe/
 
 | Platform | File |
 |---|---|
-| Windows 10/11 x64 portable | `jackedin_1.2.2_windows_x64.zip` |
-| Windows 10/11 x64 installer | `JackedIN_1.2.2_x64-setup.exe` |
-| Debian/Ubuntu x86_64 | `JackedIN_1.2.2_amd64.deb` |
-| Linux x86_64 portable | `jackedin_1.2.2_linux_x64.zip` |
-| Raspberry Pi OS 64-bit (arm64) | `JackedIN_1.2.2_arm64.deb` |
-| Raspberry Pi OS 64-bit portable | `jackedin_1.2.2_linux_arm64.tar.gz` |
-| Raspberry Pi OS 64-bit portable binary only | `jackedin_1.2.2_linux_arm64` |
+| Windows 10/11 x64 portable | `jackedin_1.2.3_windows_x64.zip` |
+| Windows 10/11 x64 installer | `JackedIN_1.2.3_x64-setup.exe` |
+| Debian/Ubuntu x86_64 | `JackedIN_1.2.3_amd64.deb` |
+| Linux x86_64 standalone binary | `jackedin_1.2.3_linux_x64` + `jackedin_1.2.3_linux_x64.integrity` (keep together) |
+| Raspberry Pi OS 64-bit (arm64) | `JackedIN_1.2.3_arm64.deb` |
+| Raspberry Pi OS 64-bit standalone binary | `jackedin_1.2.3_linux_arm64` + `jackedin_1.2.3_linux_arm64.integrity` (keep together) |
 | Python client / Nornir plugin (any OS) | `pip install jackedin nornir-jackedin` (PyPI 1.2.0; wheels on the 1.2.0 release) |
 
-Verify downloads with `SHA256SUMS`.
+Verify downloads with `SHA256SUMS`. Since 1.2.3 every program also checks itself against a signed `.integrity` manifest; keep it next to the program. A modified copy says "This copy is damaged or has been modified; re-download from getpathprobe.com."
 
 ## Video tutorials
 Watch the tutorials on YouTube: https://www.youtube.com/@BeenThere.BuiltThat
 
 ## Install
 
-**Windows:** unzip `jackedin_1.2.2_windows_x64.zip` and run `jackedin.exe` (scripts use `jackedin.com`). No admin rights are needed. An installer is also available: `JackedIN_1.2.2_x64-setup.exe`. It is not code-signed, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**.
+**Windows:** unzip `jackedin_1.2.3_windows_x64.zip` and run `jackedin.exe` (scripts use `jackedin.com`). No admin rights are needed. An installer is also available: `JackedIN_1.2.3_x64-setup.exe`. It is not code-signed, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**.
 
 **Ubuntu / Debian:**
 ```sh
-sudo apt install ./JackedIN_1.2.2_amd64.deb
+sudo apt install ./JackedIN_1.2.3_amd64.deb
 jackedin --version
 ```
 
 **Raspberry Pi OS 64-bit:**
 ```sh
-sudo apt install ./JackedIN_1.2.2_arm64.deb
+sudo apt install ./JackedIN_1.2.3_arm64.deb
 jackedin --version
 ```
 

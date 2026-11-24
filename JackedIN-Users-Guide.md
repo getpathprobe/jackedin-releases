@@ -12,7 +12,7 @@ SFTP and SCP use `jackedin sftp put` and `jackedin sftp get`, and Copy file in t
 
 ### Windows
 
-Unzip the Windows portable zip and run `jackedin.exe`. The user's guide files sit next to the executable. Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.2.2` when you run the console program.
+Unzip the Windows portable zip and run `jackedin.exe`. The user's guide files sit next to the executable. Scripts use `jackedin.com`, documented under Moving from plink. `jackedin --version` prints `1.2.3` when you run the console program.
 
 Windows SmartScreen may say “Windows protected your PC” because the program is not signed. Choose **More info**, then **Run anyway**.
 

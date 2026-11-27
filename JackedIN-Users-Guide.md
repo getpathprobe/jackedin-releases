@@ -308,7 +308,10 @@ jackedin exec and the window itself are not limited by this.
 jackedin --bench-connect user@host[:port]
 jackedin --bench-launch        print ms until the first visible paint, then exit
 jackedin --diag-capture        write capture checks and a short start attempt to a file
-jackedin fleet --inventory FILE [--cmd CMD] [--concurrency N] [--output json] [--dry-run]
+jackedin fleet --inventory FILE [--cmd CMD] [--file COMMANDS] [--timeout SEC] [--pace MS] [--terminator LINE] [--concurrency N] [--output json|csv|text] [--dry-run]
+--file is one command per line. Blank lines and # comments are skipped. SSH, Telnet, and serial come from the inventory protocol column.
+Each device waits for its prompt, or for --terminator, and pages through --More--. --timeout is per device (30 seconds when omitted). --pace waits that many milliseconds after the prompt before the next command.
+Exit 0 is every device complete. Exit 1 is a login or command failure. Exit 3 is a timeout or partial output and no other failure. Exit 2 is bad usage.
 --dry-run prints the command plan and sends nothing. It does not connect.
 --expect-file FILE adds checks on top of --verify and --expect-match.
 If the session returns to login:, Username:, or Password:, later commands are not sent.
@@ -390,6 +393,7 @@ with a TextFSM-style template from a directory you supply. Without
 --output json the parsed rows print as a table. JackedIN does
 not bundle a third-party template pack.
 fleet reads CSV or simple YAML (host, port, protocol, profile, credential, user).
+JSON `output` is the exec report, one object per command. `text` is those command outputs joined. The enable `Password:` prompt is left out of both. A drop that already printed something is status `partial` and still exit 3.
 A user column, or a global --user, is sent to that device.
 The credential value is a name, not a password. Set JACKEDIN_CRED_<NAME>.
 If that variable is unset, JackedIN looks up cred:<NAME> in the OS keychain,

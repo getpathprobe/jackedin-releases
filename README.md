@@ -14,17 +14,17 @@ Get the latest version from the [Releases page](https://github.com/getpathprobe/
 
 | Platform | File |
 |---|---|
-| Windows 10/11 x64 portable | `jackedin_1.3.0_windows_x64.zip` |
-| Windows 10/11 x64 installer | `JackedIN_1.3.0_x64-setup.exe` |
-| Debian/Ubuntu x86_64 | `JackedIN_1.3.0_amd64.deb` |
-| Linux x86_64 standalone binary | `jackedin_1.3.0_linux_x64` + `jackedin_1.3.0_linux_x64.integrity` (keep together) |
-| Linux x86_64 portable bundle | `jackedin_1.3.0_linux_x64.zip` (GUI, `jackedin-cli`, guide, examples) |
-| Raspberry Pi OS 64-bit (arm64) | `JackedIN_1.3.0_arm64.deb` |
+| Windows 10/11 x64 portable | `jackedin_1.3.1_windows_x64.zip` |
+| Windows 10/11 x64 installer | `JackedIN_1.3.1_x64-setup.exe` |
+| Debian/Ubuntu x86_64 | `JackedIN_1.3.1_amd64.deb` |
+| Linux x86_64 standalone binary | `jackedin_1.3.1_linux_x64` + `jackedin_1.3.1_linux_x64.integrity` (keep together) |
+| Linux x86_64 portable bundle | `jackedin_1.3.1_linux_amd64.tar.gz` (GUI, `jackedin-cli`, guide, examples) |
+| Raspberry Pi OS 64-bit (arm64, 1.3.0 build; no 1.3.1 arm64 build yet) | `JackedIN_1.3.0_arm64.deb` |
 | Raspberry Pi OS 64-bit standalone binary | `jackedin_1.3.0_linux_arm64` + `jackedin_1.3.0_linux_arm64.integrity` (keep together) |
 | Raspberry Pi OS 64-bit portable bundle | `jackedin_1.3.0_linux_arm64.tar.gz` |
 | Python client / Nornir plugin (any OS) | `pip install jackedin nornir-jackedin` (PyPI 1.2.0; wheels on the 1.2.0 release) |
 
-New in 1.3.0: batch mode. `jackedin fleet` runs commands across many devices over SSH, Telnet and serial, with JSON/CSV/text output and script-friendly exit codes. See `RELEASE_NOTES-1.3.0.md`.
+New in 1.3.1: `license status` now shows the true build date on the `this release:` line. Licensing and everything else is unchanged from 1.3.0, which added batch mode (`jackedin fleet`). See `RELEASE_NOTES-1.3.1.md` and `RELEASE_NOTES-1.3.0.md`. The Raspberry Pi arm64 files are still the 1.3.0 build; they are served from the v1.3.0 release.
 
 Verify downloads with `SHA256SUMS`. Since 1.2.3 every program also checks itself against a signed `.integrity` manifest; keep it next to the program. A modified copy says "This copy is damaged or has been modified; re-download from getpathprobe.com."
 
@@ -33,11 +33,11 @@ Watch the tutorials on YouTube: https://www.youtube.com/@BeenThere.BuiltThat
 
 ## Install
 
-**Windows:** unzip `jackedin_1.3.0_windows_x64.zip` and run `jackedin.exe` (scripts use `jackedin.com`). No admin rights are needed. An installer is also available: `JackedIN_1.3.0_x64-setup.exe`. It is not code-signed, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**.
+**Windows:** unzip `jackedin_1.3.1_windows_x64.zip` and run `jackedin.exe` (scripts use `jackedin.com`). No admin rights are needed. An installer is also available: `JackedIN_1.3.1_x64-setup.exe`. It is not code-signed, so SmartScreen may say "Windows protected your PC": choose **More info**, then **Run anyway**.
 
 **Ubuntu / Debian:**
 ```sh
-sudo apt install ./JackedIN_1.3.0_amd64.deb
+sudo apt install ./JackedIN_1.3.1_amd64.deb
 jackedin --version
 ```
 
